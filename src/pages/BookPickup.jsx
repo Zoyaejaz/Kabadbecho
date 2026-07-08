@@ -49,7 +49,7 @@ const BookPickup = () => {
 
     if (userEmail) {
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:8080/api/pickups/user`, {
+      fetch(`https://kabad-backend.onrender.com/api/pickups/user`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -154,7 +154,7 @@ const BookPickup = () => {
     };
 
     const token = localStorage.getItem('token');
-    fetch('http://localhost:8080/api/pickups', {
+    fetch('https://kabad-backend.onrender.com/api/pickups', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

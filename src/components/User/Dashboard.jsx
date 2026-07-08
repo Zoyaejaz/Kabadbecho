@@ -26,7 +26,7 @@ const Dashboard = () => {
       try {
         const token = localStorage.getItem('token');
         const userEmail = localStorage.getItem('email');
-        const res = await fetch(`http://localhost:8080/api/pickups/user?email=${encodeURIComponent(userEmail)}`, {
+        const res = await fetch(`https://kabad-backend.onrender.com/api/pickups/user?email=${encodeURIComponent(userEmail)}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

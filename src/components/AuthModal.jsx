@@ -66,7 +66,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
 
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      fetch('http://localhost:8080/api/auth/login', {
+      fetch('https://kabad-backend.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
 
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      fetch('http://localhost:8080/api/auth/signup', {
+      fetch('https://kabad-backend.onrender.com/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
           setSignupSuccessMessage('Registration successful! Logging you in...');
           
           // Auto-login after successful registration
-          fetch('http://localhost:8080/api/auth/login', {
+          fetch('https://kabad-backend.onrender.com/api/auth/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

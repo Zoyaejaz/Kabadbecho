@@ -32,7 +32,7 @@ const KabadBechoTrackPickup = () => {
     const userEmail = localStorage.getItem('email') || '';
     if (userEmail) {
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:8080/api/pickups/user?email=${encodeURIComponent(userEmail)}`, {
+      fetch(`https://kabad-backend.onrender.com/api/pickups/user?email=${encodeURIComponent(userEmail)}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

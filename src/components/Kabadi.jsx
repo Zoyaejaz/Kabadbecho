@@ -44,7 +44,7 @@ const KabadBechoDriverDashboard = () => {
     const email = localStorage.getItem('email') || '';
     if (email) {
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:8080/api/pickups/collector?email=${encodeURIComponent(email)}`, {
+      fetch(`https://kabad-backend.onrender.com/api/pickups/collector?email=${encodeURIComponent(email)}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -134,7 +134,7 @@ const KabadBechoDriverDashboard = () => {
   const handleStartPickup = (pickup) => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
-    fetch(`http://localhost:8080/api/pickups/${pickup.id}/accept?email=${encodeURIComponent(email)}`, {
+    fetch(`https://kabad-backend.onrender.com/api/pickups/${pickup.id}/accept?email=${encodeURIComponent(email)}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -170,7 +170,7 @@ const KabadBechoDriverDashboard = () => {
     }
 
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:8080/api/pickups/${pickup.id}/status`, {
+    fetch(`https://kabad-backend.onrender.com/api/pickups/${pickup.id}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

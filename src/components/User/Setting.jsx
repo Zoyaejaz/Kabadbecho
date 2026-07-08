@@ -40,7 +40,7 @@ const KabadBechoSettings = () => {
     const token = localStorage.getItem('token');
 
     if (email) {
-      fetch(`http://localhost:8080/api/users/profile?email=${encodeURIComponent(email)}`, {
+      fetch(`https://kabad-backend.onrender.com/api/users/profile?email=${encodeURIComponent(email)}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.json())
@@ -112,7 +112,7 @@ const KabadBechoSettings = () => {
         pincode: profileData.pincode
       };
 
-      fetch(`http://localhost:8080/api/users/profile?email=${encodeURIComponent(email)}`, {
+      fetch(`https://kabad-backend.onrender.com/api/users/profile?email=${encodeURIComponent(email)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ const KabadBechoSettings = () => {
       
       const email = localStorage.getItem('email');
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:8080/api/auth/password?email=${encodeURIComponent(email)}`, {
+      fetch(`https://kabad-backend.onrender.com/api/auth/password?email=${encodeURIComponent(email)}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',

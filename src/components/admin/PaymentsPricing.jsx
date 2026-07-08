@@ -30,7 +30,7 @@ const PaymentsPricing = () => {
   const loadPaymentsAndStats = () => {
     // Fetch stats
     const token = localStorage.getItem('token');
-    fetch('http://localhost:8080/api/admin/stats', {
+    fetch('https://kabad-backend.onrender.com/api/admin/stats', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -42,7 +42,7 @@ const PaymentsPricing = () => {
       .catch(err => console.log("Failed to fetch admin stats", err));
 
     // Fetch transactions
-    fetch('http://localhost:8080/api/admin/pickups', {
+    fetch('https://kabad-backend.onrender.com/api/admin/pickups', {
       headers: {
         'Authorization': `Bearer ${token}`
       }

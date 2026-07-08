@@ -16,7 +16,7 @@ const UserRequests = () => {
 
   const loadRequests = () => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:8080/api/admin/pickups', {
+    fetch('https://kabad-backend.onrender.com/api/admin/pickups', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -77,7 +77,7 @@ const UserRequests = () => {
 
   const handleAccept = (realId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:8080/api/pickups/${realId}/accept`, {
+    fetch(`https://kabad-backend.onrender.com/api/pickups/${realId}/accept`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`
