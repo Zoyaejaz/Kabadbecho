@@ -37,6 +37,7 @@ public class UserController {
         if (profileUpdates.getCity() != null) user.setCity(profileUpdates.getCity());
         if (profileUpdates.getState() != null) user.setState(profileUpdates.getState());
         if (profileUpdates.getPincode() != null) user.setPincode(profileUpdates.getPincode());
+        if (profileUpdates.getProfilePicUrl() != null) user.setProfilePicUrl(profileUpdates.getProfilePicUrl());
 
         User updatedUser = userRepository.save(user);
         return ResponseEntity.ok(updatedUser);

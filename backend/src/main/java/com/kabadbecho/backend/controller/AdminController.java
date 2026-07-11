@@ -56,6 +56,23 @@ public class AdminController {
         return ResponseEntity.ok(stats);
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
+    }
+
+    @PostMapping("/users/{id}/toggle-block")
+    public ResponseEntity<?> toggleUserBlock(@PathVariable Long id) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "User not found"));
+        }
+        User user = userOpt.get();
+        user.setIsBlocked(user.getIsBlocked() == null ? true : !user.getIsBlocked());
+        userRepository.save(user);
+        return ResponseEntity.ok(Map.of("message", "User block status updated", "isBlocked", user.getIsBlocked()));
+    }
+
     @GetMapping("/kyc/pending")
     public ResponseEntity<List<User>> getPendingKyc() {
         return ResponseEntity.ok(userRepository.findByKycStatus("PENDING"));

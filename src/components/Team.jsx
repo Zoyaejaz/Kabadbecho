@@ -71,7 +71,7 @@ const KabadBechoTeam = () => {
             {teamMembers.map((member, idx) => (
               <div
                 key={idx}
-                className="p-6 bg-white rounded-xl shadow-md"
+                className="p-6 bg-white rounded-sm shadow-md"
               >
                 <div className="flex justify-center mb-4">
                   <img

@@ -38,9 +38,9 @@ const KabadBechoContact = () => {
 
             {/* Contact Info */}
             <div className="space-y-8">
-              <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+              <div className="bg-white p-6 rounded-sm shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-[#E8F5E9] rounded-xl text-[#66BB6A]">
+                  <div className="p-3 bg-[#E8F5E9] rounded-sm text-[#66BB6A]">
                     <Phone size={24} />
                   </div>
                   <div>
@@ -50,9 +50,9 @@ const KabadBechoContact = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+              <div className="bg-white p-6 rounded-sm shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-[#E8F5E9] rounded-xl text-[#66BB6A]">
+                  <div className="p-3 bg-[#E8F5E9] rounded-sm text-[#66BB6A]">
                     <Mail size={24} />
                   </div>
                   <div>
@@ -62,9 +62,9 @@ const KabadBechoContact = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+              <div className="bg-white p-6 rounded-sm shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-[#E8F5E9] rounded-xl text-[#66BB6A]">
+                  <div className="p-3 bg-[#E8F5E9] rounded-sm text-[#66BB6A]">
                     <MapPin size={24} />
                   </div>
                   <div>
@@ -78,7 +78,7 @@ const KabadBechoContact = () => {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white p-8 rounded-3xl shadow-xl">
+            <div className="bg-white p-8 rounded-sm shadow-xl">
               <form className="space-y-6">
                 <div>
                   <label className="block text-sm font-semibold text-[#5D4037] mb-2">
@@ -87,7 +87,7 @@ const KabadBechoContact = () => {
                   <input
                     type="text"
                     placeholder="Enter your name"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#66BB6A]"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#66BB6A]"
                   />
                 </div>
 
@@ -98,7 +98,7 @@ const KabadBechoContact = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#66BB6A]"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#66BB6A]"
                   />
                 </div>
 
@@ -109,7 +109,7 @@ const KabadBechoContact = () => {
                   <textarea
                     rows="4"
                     placeholder="Write your message..."
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#66BB6A]"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#66BB6A]"
                   ></textarea>
                 </div>
 

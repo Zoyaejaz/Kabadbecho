@@ -54,16 +54,16 @@ const StatCard = ({ stat }) => {
     <div ref={ref} className="group relative h-full">
       {/* Glow */}
       <div
-        className="absolute inset-0 bg-linear-to-br opacity-0 group-hover:opacity-10 transition-all duration-500 rounded-2xl blur-xl"
+        className="absolute inset-0 bg-linear-to-br opacity-0 group-hover:opacity-10 transition-all duration-500 rounded-sm blur-xl"
         style={{ background: 'linear-gradient(to bottom right, #66BB6A, #4CAF50)' }}
       ></div>
 
       {/* Card */}
-      <div className="relative bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 h-full flex flex-col">
+      <div className="relative bg-white p-6 rounded-sm shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 h-full flex flex-col">
         
         {/* Number */}
         <div
-          className={`inline-flex px-4 py-2 rounded-xl bg-linear-to-br ${stat.color} text-white text-2xl font-bold mb-2 self-start`}
+          className={`inline-flex px-4 py-2 rounded-sm bg-linear-to-br ${stat.color} text-white text-2xl font-bold mb-2 self-start`}
         >
           {count}{stat.suffix}
         </div>
@@ -104,7 +104,7 @@ const KabadBechoAbout = () => {
                     key={i}
                     src={img}
                     alt="Waste"
-                    className="h-48 w-full object-cover rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
+                    className="h-48 w-full object-cover rounded-sm shadow-lg hover:scale-105 transition-transform duration-300"
                   />
                 )
               )}
@@ -167,19 +167,19 @@ const KabadBechoAbout = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left - Image/Logo */}
             <div className="relative">
-              <div className="absolute inset-0 bg-linear-to-br from-[#66BB6A]/20 to-[#81C784]/20 rounded-3xl blur-2xl"></div>
-              <div className="relative bg-linear-to-br from-[#E8F5E9] to-white p-8 rounded-3xl shadow-2xl">
+              <div className="absolute inset-0 bg-linear-to-br from-[#66BB6A]/20 to-[#81C784]/20 rounded-sm blur-2xl"></div>
+              <div className="relative bg-linear-to-br from-[#E8F5E9] to-white p-8 rounded-sm shadow-2xl">
                 <img 
                   src="KabadBecho2.jpg" 
                   alt="Kabad Becho Mission" 
                   className="w-full max-w-md mx-auto "
                 />
                 <div className="mt-8 grid grid-cols-2 gap-4">
-                  <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#66BB6A]">
+                  <div className="bg-white p-6 rounded-sm shadow-lg border-l-4 border-[#66BB6A]">
                     <div className="text-3xl font-bold text-[#66BB6A] mb-1">24/7</div>
                     <div className="text-sm text-gray-600 font-medium">Available</div>
                   </div>
-                  <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#66BB6A]">
+                  <div className="bg-white p-6 rounded-sm shadow-lg border-l-4 border-[#66BB6A]">
                     <div className="text-3xl font-bold text-[#66BB6A] mb-1">100%</div>
                     <div className="text-sm text-gray-600 font-medium">Eco-Friendly</div>
                   </div>
@@ -192,7 +192,7 @@ const KabadBechoAbout = () => {
               {/* Our Mission */}
               <div className="group">
                 <div className="flex items-start space-x-4">
-                  <div className="shrink-0 w-16 h-16 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <div className="shrink-0 w-16 h-16 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-lg">
                     <Target size={32} />
                   </div>
                   <div className="flex-1">
@@ -207,7 +207,7 @@ const KabadBechoAbout = () => {
               {/* Our Vision */}
               <div className="group">
                 <div className="flex items-start space-x-4">
-                  <div className="shrink-0 w-16 h-16 bg-linear-to-br from-[#81C784] to-[#66BB6A] rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <div className="shrink-0 w-16 h-16 bg-linear-to-br from-[#81C784] to-[#66BB6A] rounded-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-lg">
                     <Heart size={32} />
                   </div>
                   <div className="flex-1">
@@ -220,7 +220,7 @@ const KabadBechoAbout = () => {
               </div>
 
               {/* Values */}
-              <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-2xl border-2 border-[#66BB6A]/20">
+              <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-sm border-2 border-[#66BB6A]/20">
                 <h3 className="text-xl font-bold text-[#5D4037] mb-4">Core Values</h3>
                 <div className="grid grid-cols-2 gap-4">
                   {['Transparency', 'Sustainability', 'Reliability', 'Innovation'].map((value, idx) => (
@@ -275,13 +275,13 @@ const KabadBechoAbout = () => {
           desc: 'Get paid immediately via cash or online transfer',
         },
       ].map((item, idx) => (
-        <div key={idx} className="relative group">
+        <div key={idx} className="relative group h-full">
           {/* Connecting Line */}
           {idx < 3 && (
             <div className="hidden md:block absolute top-16 left-full w-full h-1 bg-linear-to-r from-[#66BB6A] to-[#81C784] -z-10"></div>
           )}
 
-          <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border-2 border-transparent hover:border-[#66BB6A] relative">
+          <div className="bg-white p-8 rounded-sm shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border-2 border-transparent hover:border-[#66BB6A] relative h-full">
             {/* Step Number */}
             <div className="absolute -top-4 -left-4 w-12 h-12 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold shadow-lg">
               {item.step}
@@ -326,13 +326,13 @@ const KabadBechoAbout = () => {
     { icon: <Recycle size={32} />, title: 'Wide Coverage', desc: 'Accepting all types of recyclable materials', gradient: 'from-[#81C784] to-[#4CAF50]' }
   ].map((feature, idx) => (
     <div key={idx} className="group relative h-full">
-      <div className="absolute inset-0 bg-linear-to-br from-[#66BB6A]/5 to-transparent rounded-2xl transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-[#66BB6A]/5 to-transparent rounded-sm transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
 
-      <div className="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl
+      <div className="relative bg-white p-8 rounded-sm shadow-lg hover:shadow-2xl
                       transition-all duration-500 border border-gray-100 group-hover:border-[#66BB6A]
                       h-full">
         
-        <div className={`inline-flex p-4 rounded-xl bg-linear-to-br ${feature.gradient} text-white mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+        <div className={`inline-flex p-4 rounded-sm bg-linear-to-br ${feature.gradient} text-white mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
           {feature.icon}
         </div>
 

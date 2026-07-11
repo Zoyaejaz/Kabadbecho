@@ -11,95 +11,32 @@ const ComplaintsSupport = () => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
-  const [complaints, setComplaints] = useState([
-    {
-      id: 'CMP001',
-      userId: 'USR001',
-      userName: 'Rajesh Kumar',
-      phone: '+91 98765 43210',
-      issueType: 'Payment Issue',
-      subject: 'Payment not received for pickup REQ001',
-      description: 'I completed the pickup on Jan 2nd but haven\'t received payment yet. The pickup ID was REQ001.',
-      status: 'open',
-      priority: 'high',
-      createdAt: '2025-01-05 10:30 AM',
-      updatedAt: '2025-01-05 10:30 AM',
-      assignedTo: null,
-      adminNotes: [],
-      relatedPickupId: 'REQ001'
-    },
-    {
-      id: 'CMP002',
-      userId: 'USR002',
-      userName: 'Priya Sharma',
-      phone: '+91 87654 32109',
-      issueType: 'Pickup Delay',
-      subject: 'Driver arrived 2 hours late',
-      description: 'The scheduled pickup time was 2-4 PM but the driver arrived at 6 PM. This caused inconvenience.',
-      status: 'in-progress',
-      priority: 'medium',
-      createdAt: '2025-01-04 06:15 PM',
-      updatedAt: '2025-01-05 09:00 AM',
-      assignedTo: 'Support Team A',
-      adminNotes: [
-        { timestamp: '2025-01-05 09:00 AM', note: 'Contacted driver for explanation', admin: 'Admin' }
-      ],
-      relatedPickupId: 'REQ002'
-    },
-    {
-      id: 'CMP003',
-      userId: 'USR003',
-      userName: 'Amit Patel',
-      phone: '+91 76543 21098',
-      issueType: 'Pricing Dispute',
-      subject: 'Lower price offered than expected',
-      description: 'The website showed ₹50/kg for electronics but I was only paid ₹35/kg.',
-      status: 'resolved',
-      priority: 'medium',
-      createdAt: '2025-01-03 11:20 AM',
-      updatedAt: '2025-01-04 02:30 PM',
-      assignedTo: 'Support Team B',
-      adminNotes: [
-        { timestamp: '2025-01-03 02:00 PM', note: 'Checked pricing table, user was right', admin: 'Admin' },
-        { timestamp: '2025-01-04 02:30 PM', note: 'Additional payment of ₹120 processed', admin: 'Admin' }
-      ],
-      relatedPickupId: 'REQ003'
-    },
-    {
-      id: 'CMP004',
-      userId: 'USR005',
-      userName: 'Vikram Singh',
-      phone: '+91 54321 09876',
-      issueType: 'App/Website Issue',
-      subject: 'Unable to schedule pickup',
-      description: 'The website keeps showing error when I try to select a pickup date. Getting "Server Error 500".',
-      status: 'in-progress',
-      priority: 'high',
-      createdAt: '2025-01-05 08:45 AM',
-      updatedAt: '2025-01-05 11:00 AM',
-      assignedTo: 'Tech Team',
-      adminNotes: [
-        { timestamp: '2025-01-05 11:00 AM', note: 'Escalated to development team', admin: 'Admin' }
-      ],
-      relatedPickupId: null
-    },
-    {
-      id: 'CMP005',
-      userId: 'USR004',
-      userName: 'Sneha Reddy',
-      phone: '+91 65432 10987',
-      issueType: 'Service Quality',
-      subject: 'Driver was unprofessional',
-      description: 'The pickup driver was rude and didn\'t handle the items carefully.',
-      status: 'open',
-      priority: 'low',
-      createdAt: '2025-01-05 03:20 PM',
-      updatedAt: '2025-01-05 03:20 PM',
-      assignedTo: null,
-      adminNotes: [],
-      relatedPickupId: 'REQ004'
-    },
-  ]);
+  const [complaints, setComplaints] = useState([]);
+  
+  React.useEffect(() => {
+    const fetchComplaints = async () => {
+      try {
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                      ? 'http://localhost:8080' 
+                      : 'https://kabad-backend.onrender.com';
+        const response = await fetch(`${API_URL}/api/complaints`);
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = data.map(c => ({
+             ...c,
+             id: `TKT-${c.id}`,
+             adminNotes: [],
+             createdAt: new Date(c.createdAt).toLocaleString(),
+             updatedAt: new Date(c.createdAt).toLocaleString()
+          }));
+          setComplaints(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch complaints from DB", err);
+      }
+    };
+    fetchComplaints();
+  }, []);
 
   const getStatusColor = (status) => {
     const colors = {
@@ -128,12 +65,28 @@ const ComplaintsSupport = () => {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
-  const handleUpdateStatus = (complaintId, newStatus) => {
+  const handleUpdateStatus = async (complaintId, newStatus) => {
+    // optimistic UI update
     setComplaints(complaints.map(c =>
       c.id === complaintId
         ? { ...c, status: newStatus, updatedAt: new Date().toLocaleString() }
         : c
     ));
+    
+    // DB sync
+    try {
+      const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                      ? 'http://localhost:8080' 
+                      : 'https://kabad-backend.onrender.com';
+      const numericId = complaintId.replace('TKT-', '');
+      await fetch(`${API_URL}/api/complaints/${numericId}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+    } catch (err) {
+      console.error("Failed to commit status change to backend", err);
+    }
   };
 
   const handleAddNote = (complaintId, note) => {
@@ -165,19 +118,19 @@ const ComplaintsSupport = () => {
           <p className="text-gray-600 mt-1">Handle user issues and support tickets</p>
         </div>
         <div className="flex gap-2">
-          <div className="bg-yellow-50 px-4 py-2 rounded-lg border border-yellow-200">
+          <div className="bg-yellow-50 px-4 py-2 rounded-sm border border-yellow-200">
             <p className="text-xs text-yellow-600">Open</p>
             <p className="text-2xl font-bold text-yellow-700">
               {complaints.filter(c => c.status === 'open').length}
             </p>
           </div>
-          <div className="bg-[#EFEBE9] px-4 py-2 rounded-lg border border-[#D7CCC8]">
+          <div className="bg-[#EFEBE9] px-4 py-2 rounded-sm border border-[#D7CCC8]">
             <p className="text-xs text-[#5D4037]">In Progress</p>
             <p className="text-2xl font-bold text-[#4E342E]">
               {complaints.filter(c => c.status === 'in-progress').length}
             </p>
           </div>
-          <div className="bg-[#E8F5E9] px-4 py-2 rounded-lg border border-[#C8E6C9]">
+          <div className="bg-[#E8F5E9] px-4 py-2 rounded-sm border border-[#C8E6C9]">
             <p className="text-xs text-[#2E7D32]">Resolved</p>
             <p className="text-2xl font-bold text-[#1B5E20]">
               {complaints.filter(c => c.status === 'resolved').length}
@@ -187,7 +140,7 @@ const ComplaintsSupport = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-4 rounded-sm shadow-sm border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Search */}
           <div className="relative md:col-span-2">
@@ -197,7 +150,7 @@ const ComplaintsSupport = () => {
               placeholder="Search by subject, user, or ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
             />
           </div>
 
@@ -207,7 +160,7 @@ const ComplaintsSupport = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
             >
               <option value="all">All Status</option>
               <option value="open">Open</option>
@@ -222,7 +175,7 @@ const ComplaintsSupport = () => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
             >
               <option value="all">All Priority</option>
               <option value="low">Low</option>
@@ -234,7 +187,7 @@ const ComplaintsSupport = () => {
       </div>
 
       {/* Complaints Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -308,7 +261,7 @@ const ComplaintsSupport = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
                       onClick={() => viewComplaintDetails(complaint)}
-                      className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-lg transition-colors"
+                      className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-sm transition-colors"
                       title="View Details"
                     >
                       <Eye size={18} />
@@ -331,12 +284,12 @@ const ComplaintsSupport = () => {
       {/* Complaint Detail Modal */}
       {showDetailModal && selectedComplaint && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-sm max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
               <h3 className="text-xl font-bold text-[#5D4037]">Complaint Details</h3>
               <button
                 onClick={() => setShowDetailModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-sm transition-colors"
               >
                 <Eye size={24} className="rotate-180" />
               </button>
@@ -402,7 +355,7 @@ const ComplaintsSupport = () => {
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 mb-2">Description</p>
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-200">
                       <p className="text-sm text-gray-700">{selectedComplaint.description}</p>
                     </div>
                   </div>
@@ -416,7 +369,7 @@ const ComplaintsSupport = () => {
                   <select
                     value={selectedComplaint.status}
                     onChange={(e) => handleUpdateStatus(selectedComplaint.id, e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
                   >
                     <option value="open">Open</option>
                     <option value="in-progress">In Progress</option>
@@ -425,7 +378,7 @@ const ComplaintsSupport = () => {
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 mb-2">Priority</p>
-                  <span className={`inline-block px-4 py-2 rounded-lg text-sm font-medium ${getPriorityColor(selectedComplaint.priority)}`}>
+                  <span className={`inline-block px-4 py-2 rounded-sm text-sm font-medium ${getPriorityColor(selectedComplaint.priority)}`}>
                     {selectedComplaint.priority.charAt(0).toUpperCase() + selectedComplaint.priority.slice(1)}
                   </span>
                 </div>
@@ -444,7 +397,7 @@ const ComplaintsSupport = () => {
                 <div className="space-y-3 mb-4">
                   {selectedComplaint.adminNotes.length > 0 ? (
                     selectedComplaint.adminNotes.map((note, index) => (
-                      <div key={index} className="bg-[#EFEBE9] p-4 rounded-lg border border-[#D7CCC8]">
+                      <div key={index} className="bg-[#EFEBE9] p-4 rounded-sm border border-[#D7CCC8]">
                         <div className="flex items-start justify-between mb-2">
                           <span className="text-xs font-medium text-[#5D4037]">{note.admin}</span>
                           <span className="text-xs text-[#8D6E63]">{note.timestamp}</span>
@@ -462,7 +415,7 @@ const ComplaintsSupport = () => {
                   <textarea
                     id="new-note"
                     placeholder="Add internal admin note..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent mb-2"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent mb-2"
                     rows="3"
                   />
                   <button
@@ -473,7 +426,7 @@ const ComplaintsSupport = () => {
                         document.getElementById('new-note').value = '';
                       }
                     }}
-                    className="px-4 py-2 bg-[#5D4037] text-white rounded-lg hover:bg-[#4E342E] transition-colors"
+                    className="px-4 py-2 bg-[#5D4037] text-white rounded-sm hover:bg-[#4E342E] transition-colors"
                   >
                     Add Note
                   </button>
@@ -487,14 +440,14 @@ const ComplaintsSupport = () => {
                     handleUpdateStatus(selectedComplaint.id, 'resolved');
                     setShowDetailModal(false);
                   }}
-                  className="flex-1 px-4 py-2 bg-[#66BB6A] text-white rounded-lg hover:bg-[#4CAF50] transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2 bg-[#66BB6A] text-white rounded-sm hover:bg-[#4CAF50] transition-colors flex items-center justify-center gap-2"
                 >
                   <CheckCircle2 size={18} />
                   <span>Mark as Resolved</span>
                 </button>
                 <button
                   onClick={() => setShowDetailModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
                 >
                   Close
                 </button>

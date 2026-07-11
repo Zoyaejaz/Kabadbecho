@@ -118,7 +118,7 @@ const KabadBechoTestimonials = () => {
             {visibleTestimonials.map((item, idx) => (
               <div
                 key={idx}
-                className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#66BB6A]"
+                className="group bg-white rounded-sm shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#66BB6A]"
               >
                 <div className="p-6 relative h-full flex flex-col">
 

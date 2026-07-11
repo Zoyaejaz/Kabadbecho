@@ -32,7 +32,7 @@ public class User {
     private String state;
     private String pincode;
 
-    @Column(name = "profile_pic_url")
+    @Column(name = "profile_pic_url", columnDefinition = "TEXT")
     private String profilePicUrl;
 
     private String tier = "Bronze"; // Bronze, Silver, Eco Warrior, etc.
@@ -58,6 +58,9 @@ public class User {
 
     @Column(name = "is_online")
     private Boolean isOnline = false;
+
+    @Column(name = "is_blocked")
+    private Boolean isBlocked = false;
 
     @Column(name = "current_lat")
     private Double currentLat;
@@ -146,6 +149,9 @@ public class User {
 
     public Boolean getIsOnline() { return isOnline; }
     public void setIsOnline(Boolean isOnline) { this.isOnline = isOnline; }
+
+    public Boolean getIsBlocked() { return isBlocked; }
+    public void setIsBlocked(Boolean isBlocked) { this.isBlocked = isBlocked; }
 
     public Double getCurrentLat() { return currentLat; }
     public void setCurrentLat(Double currentLat) { this.currentLat = currentLat; }

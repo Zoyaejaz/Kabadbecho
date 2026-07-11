@@ -153,7 +153,7 @@ const KabadBechoServices = () => {
             <div className="lg:col-span-7 space-y-12">
               <div>
                 <h2 className="text-4xl font-black text-[#5D4037] mb-6 flex items-center">
-                  <span className="mr-4 p-3 bg-[#E8F5E9] rounded-2xl text-[#66BB6A]">
+                  <span className="mr-4 p-3 bg-[#E8F5E9] rounded-sm text-[#66BB6A]">
                     {currentService.mainIcon}
                   </span>
                   {currentService.title} Insights
@@ -172,7 +172,7 @@ const KabadBechoServices = () => {
                   {currentService.subCategories.map((sub, i) => (
                     <div
                       key={i}
-                      className="flex justify-between items-center p-5 bg-gray-50 rounded-2xl border border-gray-100 hover:border-[#66BB6A] transition-colors"
+                      className="flex justify-between items-center p-5 bg-gray-50 rounded-sm border border-gray-100 hover:border-[#66BB6A] transition-colors"
                     >
                       <span className="font-semibold text-gray-700">{sub.name}</span>
                       <span className="text-[#66BB6A] font-black">{sub.price}</span>
@@ -221,7 +221,7 @@ const KabadBechoServices = () => {
                   {currentService.benefits.map((benefit, i) => (
                     <li
                       key={i}
-                      className="flex items-center text-gray-700 font-medium bg-[#F1F8E9] p-4 rounded-xl"
+                      className="flex items-center text-gray-700 font-medium bg-[#F1F8E9] p-4 rounded-sm"
                     >
                       <CheckCircle
                         className="text-[#66BB6A] mr-4 shrink-0"
@@ -254,7 +254,7 @@ const KabadBechoServices = () => {
               { q: "Is there a minimum pickup weight?", a: "For residential areas, we recommend a minimum of 20kg. For industrial e-waste or metal, we have no minimum limit." },
               { q: "When do I get paid?", a: "Payment is processed instantly via UPI, Bank Transfer, or Cash immediately after the weighing is completed." }
             ].map((faq, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-sm border border-gray-100">
+              <div key={i} className="bg-white rounded-sm shadow-sm border border-gray-100">
                 <button
                   onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                   className="w-full p-6 text-left flex justify-between items-center"

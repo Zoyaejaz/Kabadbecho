@@ -142,7 +142,7 @@ const Navbar = () => {
 
                     {/* Dropdown Menu */}
                     {showProfileMenu && (
-                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn">
+                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-sm shadow-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn">
                         <div className="p-4 bg-gradient-to-br from-[#E8F5E9] to-white border-b border-gray-100">
                           <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 bg-[#66BB6A] rounded-full flex items-center justify-center text-white">
@@ -158,14 +158,14 @@ const Navbar = () => {
                           <Link
                             to={getDashboardPath()}
                             onClick={() => setShowProfileMenu(false)}
-                            className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:bg-[#E8F5E9] rounded-lg transition-colors"
+                            className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:bg-[#E8F5E9] rounded-sm transition-colors"
                           >
                             <User size={16} />
                             <span className="text-sm font-medium">Dashboard</span>
                           </Link>
                           <button
                             onClick={handleLogout}
-                            className="w-full flex items-center space-x-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            className="w-full flex items-center space-x-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-sm transition-colors"
                           >
                             <LogOut size={16} />
                             <span className="text-sm font-medium">Sign Out</span>
@@ -192,7 +192,7 @@ const Navbar = () => {
                   key={item}
                   to={getPath(item)}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block w-full text-left px-4 py-3 font-semibold rounded-lg transition-colors ${location.pathname === getPath(item)
+                  className={`block w-full text-left px-4 py-3 font-semibold rounded-sm transition-colors ${location.pathname === getPath(item)
                     ? 'bg-[#E8F5E9] text-[#66BB6A]'
                     : 'text-[#5D4037] hover:bg-[#E8F5E9]'
                     }`}
@@ -210,7 +210,7 @@ const Navbar = () => {
                         setIsAuthModalOpen(true); 
                         setIsMenuOpen(false); 
                       }}
-                      className="w-full px-4 py-3 font-semibold text-[#5D4037] border border-[#66BB6A] rounded-lg hover:bg-[#E8F5E9] transition-colors"
+                      className="w-full px-4 py-3 font-semibold text-[#5D4037] border border-[#66BB6A] rounded-sm hover:bg-[#E8F5E9] transition-colors"
                     >
                       Login
                     </button>
@@ -219,7 +219,7 @@ const Navbar = () => {
                 ) : (
                   <>
                     {/* Logged In Status */}
-                    <div className="px-4 py-3 bg-[#E8F5E9] rounded-lg border border-[#C8E6C9]">
+                    <div className="px-4 py-3 bg-[#E8F5E9] rounded-sm border border-[#C8E6C9]">
                       <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-[#66BB6A] rounded-full flex items-center justify-center text-white">
                           <User size={20} />
@@ -234,14 +234,14 @@ const Navbar = () => {
                     <Link
                       to={getDashboardPath()}
                       onClick={() => setIsMenuOpen(false)}
-                      className="w-full flex items-center justify-center space-x-2 px-4 py-3 text-[#5D4037] border border-[#66BB6A] rounded-lg hover:bg-[#E8F5E9] transition-colors font-semibold"
+                      className="w-full flex items-center justify-center space-x-2 px-4 py-3 text-[#5D4037] border border-[#66BB6A] rounded-sm hover:bg-[#E8F5E9] transition-colors font-semibold"
                     >
                       <User size={18} />
                       <span>Dashboard</span>
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center justify-center space-x-2 px-4 py-3 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors font-semibold"
+                      className="w-full flex items-center justify-center space-x-2 px-4 py-3 text-red-600 border border-red-300 rounded-sm hover:bg-red-50 transition-colors font-semibold"
                     >
                       <LogOut size={18} />
                       <span>Sign Out</span>

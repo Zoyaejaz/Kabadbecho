@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Calendar, Clock, Phone, CheckCircle, ArrowRight, Truck, ArrowLeft, Mail, MapPin, Scale, Camera, X } from 'lucide-react';
 import Navbar from '../components/Navbar.jsx';
+import API_URL from '../config';
 
 const BookPickup = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const BookPickup = () => {
 
     if (userEmail) {
       const token = localStorage.getItem('token');
-      fetch(`https://kabad-backend.onrender.com/api/pickups/user`, {
+      fetch(`${API_URL}/api/pickups/user`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -154,7 +155,7 @@ const BookPickup = () => {
     };
 
     const token = localStorage.getItem('token');
-    fetch('https://kabad-backend.onrender.com/api/pickups', {
+    fetch(`${API_URL}/api/pickups`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -204,7 +205,7 @@ const BookPickup = () => {
         </button>
 
         {/* Form Container */}
-        <div className="bg-white rounded-3xl border border-gray-100 p-6 md:p-10 shadow-xl relative overflow-hidden">
+        <div className="bg-white rounded-sm border border-gray-100 p-6 md:p-10 shadow-xl relative overflow-hidden">
           {/* Top border decor */}
           <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-[#66BB6A] via-[#9CCC65] to-[#26A69A]"></div>
 
@@ -237,7 +238,7 @@ const BookPickup = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter your name"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
+                    className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
                     required
                   />
                 </div>
@@ -249,7 +250,7 @@ const BookPickup = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="+91 0000000000"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
+                    className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
                     required
                   />
                 </div>
@@ -261,7 +262,7 @@ const BookPickup = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="john@example.com"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
+                    className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
                     required
                   />
                 </div>
@@ -273,7 +274,7 @@ const BookPickup = () => {
                     value={formData.weight}
                     onChange={handleInputChange}
                     placeholder="Approximated weight in kg"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
+                    className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
                   />
                 </div>
                 <div className="md:col-span-2 space-y-1">
@@ -284,7 +285,7 @@ const BookPickup = () => {
                     onChange={handleInputChange}
                     placeholder="Enter complete address with landmarks"
                     rows="3"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700 resize-none"
+                    className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700 resize-none"
                     required
                   />
                 </div>
@@ -304,7 +305,7 @@ const BookPickup = () => {
                     <div
                       key={type.id}
                       onClick={() => toggleScrapType(type.id)}
-                      className={`cursor-pointer p-4 rounded-xl border-2 transition-all flex flex-col items-center text-center relative ${
+                      className={`cursor-pointer p-4 rounded-sm border-2 transition-all flex flex-col items-center text-center relative ${
                         isSelected 
                           ? 'border-[#66BB6A] bg-[#E8F5E9] text-[#2E7D32]' 
                           : 'border-gray-100 bg-gray-50 hover:bg-gray-100 text-gray-500'
@@ -339,7 +340,7 @@ const BookPickup = () => {
                     value={formData.date}
                     min={today}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
+                    className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
                     required
                   />
                 </div>
@@ -349,7 +350,7 @@ const BookPickup = () => {
                     name="time"
                     value={formData.time}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
+                    className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700"
                     required
                   >
                     <option value="">Choose Time Slot</option>
@@ -367,7 +368,7 @@ const BookPickup = () => {
                 <span className="w-6 h-6 rounded-full bg-[#66BB6A] text-white flex items-center justify-center text-xs font-bold">4</span>
                 Upload Scrap Photos (Optional)
               </h3>
-              <div className="border-2 border-dashed border-gray-200 hover:border-[#66BB6A] rounded-2xl p-6 text-center bg-gray-50 transition-colors cursor-pointer group">
+              <div className="border-2 border-dashed border-gray-200 hover:border-[#66BB6A] rounded-sm p-6 text-center bg-gray-50 transition-colors cursor-pointer group">
                 <input
                   type="file"
                   multiple
@@ -387,7 +388,7 @@ const BookPickup = () => {
               {photos.length > 0 && (
                 <div className="grid grid-cols-4 gap-4 mt-4">
                   {photos.map((photo, index) => (
-                    <div key={index} className="relative group rounded-xl overflow-hidden shadow-sm aspect-square border bg-white">
+                    <div key={index} className="relative group rounded-sm overflow-hidden shadow-sm aspect-square border bg-white">
                       <img src={photo.url} alt="preview" className="w-full h-full object-cover" />
                       <button
                         type="button"
@@ -411,14 +412,14 @@ const BookPickup = () => {
                 onChange={handleInputChange}
                 placeholder="Any special instructions for driver (e.g. lift available, items sorted)"
                 rows="2"
-                className="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700 resize-none"
+                className="w-full px-4 py-3 rounded-sm bg-gray-50 border-2 border-gray-100 outline-none focus:border-[#66BB6A] transition-all font-medium text-sm text-gray-700 resize-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 bg-[#66BB6A] text-white rounded-2xl font-extrabold text-lg hover:bg-[#43A047] transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-200 disabled:opacity-75"
+              className="w-full py-4 bg-[#66BB6A] text-white rounded-sm font-extrabold text-lg hover:bg-[#43A047] transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-200 disabled:opacity-75"
             >
               {isLoading ? 'Processing Booking...' : 'Confirm Pickup Request'}
               <ArrowRight size={20} />
@@ -430,7 +431,7 @@ const BookPickup = () => {
       {/* Success Drawing Checkmark Modal Overlay */}
       {showSuccessOverlay && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl border border-gray-100 animate-scaleUp">
+          <div className="bg-white rounded-sm p-8 max-w-sm w-full text-center shadow-2xl border border-gray-100 animate-scaleUp">
             {/* Circular Pulse and Draw Checkmark */}
             <div className="w-24 h-24 bg-[#E8F5E9] rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulseCircle">
               <svg 

@@ -100,14 +100,14 @@ const SettingsControls = () => {
           <div className="flex gap-2">
             <button
               onClick={discardChanges}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
             >
               <X size={18} />
               <span>Discard</span>
             </button>
             <button
               onClick={saveSettings}
-              className="flex items-center gap-2 px-4 py-2 bg-[#66BB6A] text-white rounded-lg hover:bg-[#4CAF50] transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-[#66BB6A] text-white rounded-sm hover:bg-[#4CAF50] transition-colors"
             >
               <Save size={18} />
               <span>Save Changes</span>
@@ -117,7 +117,7 @@ const SettingsControls = () => {
       </div>
 
       {/* Service Area Management */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <MapPin className="text-[#66BB6A]" size={24} />
@@ -128,7 +128,7 @@ const SettingsControls = () => {
           </div>
           <button
             onClick={addServiceArea}
-            className="flex items-center gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-lg hover:bg-[#4E342E] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-sm hover:bg-[#4E342E] transition-colors"
           >
             <Plus size={18} />
             <span>Add Area</span>
@@ -140,7 +140,7 @@ const SettingsControls = () => {
             {serviceAreas.map((area) => (
               <div
                 key={area.id}
-                className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-lg hover:bg-[#C8E6C9] transition-colors"
+                className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-sm hover:bg-[#C8E6C9] transition-colors"
               >
                 <div className="flex items-center gap-3 flex-1">
                   <MapPin size={20} className={area.enabled ? 'text-[#66BB6A]' : 'text-gray-400'} />
@@ -159,7 +159,7 @@ const SettingsControls = () => {
                   </span>
                   <button
                     onClick={() => toggleServiceArea(area.id)}
-                    className="p-2 hover:bg-white rounded-lg transition-colors"
+                    className="p-2 hover:bg-white rounded-sm transition-colors"
                   >
                     {area.enabled ? (
                       <ToggleRight size={28} className="text-[#66BB6A]" />
@@ -169,7 +169,7 @@ const SettingsControls = () => {
                   </button>
                   <button
                     onClick={() => removeServiceArea(area.id)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="p-2 text-red-600 hover:bg-red-50 rounded-sm transition-colors"
                   >
                     <Trash2 size={18} />
                   </button>
@@ -181,7 +181,7 @@ const SettingsControls = () => {
       </div>
 
       {/* Working Hours Configuration */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <Clock className="text-[#5D4037]" size={24} />
@@ -194,7 +194,7 @@ const SettingsControls = () => {
 
         <div className="p-6 space-y-4">
           {/* Weekdays */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 bg-[#E8F5E9] rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 bg-[#E8F5E9] rounded-sm">
             <div>
               <p className="font-medium text-gray-900">Monday - Friday</p>
               <p className="text-sm text-gray-500">Weekdays</p>
@@ -210,7 +210,7 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
               />
               <span className="text-gray-500">to</span>
               <input
@@ -223,7 +223,7 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
               />
             </div>
             <div className="flex items-center gap-2 justify-end">
@@ -233,7 +233,7 @@ const SettingsControls = () => {
           </div>
 
           {/* Saturday */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 bg-[#E8F5E9] rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 bg-[#E8F5E9] rounded-sm">
             <div>
               <p className="font-medium text-gray-900">Saturday</p>
               <p className="text-sm text-gray-500">Weekend</p>
@@ -249,7 +249,7 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
               />
               <span className="text-gray-500">to</span>
               <input
@@ -262,7 +262,7 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
               />
             </div>
             <div className="flex items-center gap-2 justify-end">
@@ -272,7 +272,7 @@ const SettingsControls = () => {
           </div>
 
           {/* Sunday */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 bg-[#E8F5E9] rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 bg-[#E8F5E9] rounded-sm">
             <div>
               <p className="font-medium text-gray-900">Sunday</p>
               <p className="text-sm text-gray-500">Weekend</p>
@@ -289,7 +289,7 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent disabled:opacity-50"
+                className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent disabled:opacity-50"
               />
               <span className="text-gray-500">to</span>
               <input
@@ -303,7 +303,7 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent disabled:opacity-50"
+                className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent disabled:opacity-50"
               />
             </div>
             <div className="flex items-center gap-2 justify-end">
@@ -334,7 +334,7 @@ const SettingsControls = () => {
       </div>
 
       {/* Holiday / No-Service Dates */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <Calendar className="text-[#5D4037]" size={24} />
@@ -350,7 +350,7 @@ const SettingsControls = () => {
             {holidays.map((holiday) => (
               <div
                 key={holiday.id}
-                className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-lg"
+                className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-sm"
               >
                 <div className="flex items-center gap-3">
                   <Calendar size={20} className={holiday.enabled ? 'text-[#5D4037]' : 'text-gray-400'} />
@@ -382,7 +382,7 @@ const SettingsControls = () => {
       </div>
 
       {/* Cancellation Policy */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <Ban className="text-[#5D4037]" size={24} />
@@ -395,7 +395,7 @@ const SettingsControls = () => {
 
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-4 bg-[#E8F5E9] rounded-lg">
+            <div className="p-4 bg-[#E8F5E9] rounded-sm">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Cancellation Window (hours before pickup)
               </label>
@@ -409,14 +409,14 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Users can cancel up to this many hours before scheduled pickup
               </p>
             </div>
 
-            <div className="p-4 bg-[#E8F5E9] rounded-lg">
+            <div className="p-4 bg-[#E8F5E9] rounded-sm">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Max Cancellations Per Month
               </label>
@@ -430,7 +430,7 @@ const SettingsControls = () => {
                   });
                   setHasChanges(true);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Maximum allowed cancellations before penalties apply
@@ -441,7 +441,7 @@ const SettingsControls = () => {
       </div>
 
       {/* Platform-Wide Toggles */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <SettingsIcon className="text-[#5D4037]" size={24} />
@@ -454,7 +454,7 @@ const SettingsControls = () => {
 
         <div className="p-6 space-y-4">
           {/* Auto Accept Requests */}
-          <div className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-lg hover:bg-[#C8E6C9] transition-colors">
+          <div className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-sm hover:bg-[#C8E6C9] transition-colors">
             <div>
               <p className="font-medium text-gray-900">Auto-Accept Requests</p>
               <p className="text-sm text-gray-500">Automatically accept all incoming pickup requests</p>
@@ -472,7 +472,7 @@ const SettingsControls = () => {
           </div>
 
           {/* Email Notifications */}
-          <div className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-lg hover:bg-[#C8E6C9] transition-colors">
+          <div className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-sm hover:bg-[#C8E6C9] transition-colors">
             <div>
               <p className="font-medium text-gray-900">Email Notifications</p>
               <p className="text-sm text-gray-500">Send email notifications to users</p>
@@ -490,7 +490,7 @@ const SettingsControls = () => {
           </div>
 
           {/* SMS Notifications */}
-          <div className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-lg hover:bg-[#C8E6C9] transition-colors">
+          <div className="flex items-center justify-between p-4 bg-[#E8F5E9] rounded-sm hover:bg-[#C8E6C9] transition-colors">
             <div>
               <p className="font-medium text-gray-900">SMS Notifications</p>
               <p className="text-sm text-gray-500">Send SMS alerts to users</p>
@@ -508,7 +508,7 @@ const SettingsControls = () => {
           </div>
 
           {/* Maintenance Mode */}
-          <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+          <div className="flex items-center justify-between p-4 bg-red-50 rounded-sm border border-red-200">
             <div>
               <p className="font-medium text-red-900">Maintenance Mode</p>
               <p className="text-sm text-red-600">Disable all user-facing services</p>

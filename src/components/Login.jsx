@@ -3,6 +3,8 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight, Recycle, Leaf, Info, Loader2 } fro
 import { useNavigate } from 'react-router-dom';
 import AuthModal from './AuthModal';
 
+import API_URL from '../config';
+
 const DEMO_CREDENTIALS = {
   email: 'admin@kabadbecho.com',
   password: 'admin123'
@@ -45,7 +47,7 @@ const KabadBechoLogin = () => {
 
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      fetch('https://kabad-backend.onrender.com/api/auth/login', {
+      fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +99,7 @@ const KabadBechoLogin = () => {
       </div>
 
       <div className="w-full max-w-md relative z-10 animate-fade-in-up">
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/50 p-8 sm:p-10 relative overflow-hidden">
+        <div className="bg-white/90 backdrop-blur-xl rounded-sm shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/50 p-8 sm:p-10 relative overflow-hidden">
 
           {/* Top Decorative Line */}
           <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-[#66BB6A] via-[#9CCC65] to-[#26A69A]"></div>
@@ -107,7 +109,7 @@ const KabadBechoLogin = () => {
 
           {/* Header */}
           <div className="text-center mb-10 relative">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-tr from-[#66BB6A] to-[#AED581] rounded-2xl mb-6 shadow-lg shadow-green-200 transform rotate-3 hover:rotate-6 transition-transform duration-300">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-tr from-[#66BB6A] to-[#AED581] rounded-sm mb-6 shadow-lg shadow-green-200 transform rotate-3 hover:rotate-6 transition-transform duration-300">
               <Recycle className="text-white drop-shadow-md" size={40} />
             </div>
             <h2 className="text-3xl font-extrabold text-[#2E7D32] mb-2 tracking-tight">
@@ -119,7 +121,7 @@ const KabadBechoLogin = () => {
           </div>
 
           {/* Demo Credentials Alert - Styled nicer */}
-          <div className="mb-8 p-4 bg-[#E3F2FD] border border-[#BBDEFB] rounded-2xl flex items-start space-x-3 transition-opacity duration-300 hover:opacity-100">
+          <div className="mb-8 p-4 bg-[#E3F2FD] border border-[#BBDEFB] rounded-sm flex items-start space-x-3 transition-opacity duration-300 hover:opacity-100">
             <Info className="text-[#1976D2] shrink-0 mt-0.5" size={20} />
             <div>
               <h3 className="font-bold text-[#0D47A1] text-sm mb-1">Admin Access</h3>
@@ -142,7 +144,7 @@ const KabadBechoLogin = () => {
             <div className="space-y-2">
               <label className="text-sm font-bold text-[#558B2F] ml-1">Email Address</label>
               <div className={`
-                relative group transition-all duration-300 rounded-xl
+                relative group transition-all duration-300 rounded-sm
                 ${focusedInput === 'email' ? 'shadow-[0_0_0_4px_rgba(102,187,106,0.2)]' : ''}
               `}>
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -159,7 +161,7 @@ const KabadBechoLogin = () => {
                   }}
                   placeholder="name@example.com"
                   className={`
-                    w-full pl-12 pr-4 py-4 bg-gray-50 border-2 rounded-xl outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400
+                    w-full pl-12 pr-4 py-4 bg-gray-50 border-2 rounded-sm outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400
                     ${errors.email ? 'border-red-400 bg-red-50' : 'border-gray-100 hover:border-gray-200'}
                     ${focusedInput === 'email' && !errors.email ? 'border-[#66BB6A] bg-white' : ''}
                   `}
@@ -176,7 +178,7 @@ const KabadBechoLogin = () => {
             <div className="space-y-2">
               <label className="text-sm font-bold text-[#558B2F] ml-1">Password</label>
               <div className={`
-                relative group transition-all duration-300 rounded-xl
+                relative group transition-all duration-300 rounded-sm
                 ${focusedInput === 'password' ? 'shadow-[0_0_0_4px_rgba(102,187,106,0.2)]' : ''}
               `}>
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -193,7 +195,7 @@ const KabadBechoLogin = () => {
                   }}
                   placeholder="Enter your password"
                   className={`
-                    w-full pl-12 pr-12 py-4 bg-gray-50 border-2 rounded-xl outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400
+                    w-full pl-12 pr-12 py-4 bg-gray-50 border-2 rounded-sm outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400
                     ${errors.password ? 'border-red-400 bg-red-50' : 'border-gray-100 hover:border-gray-200'}
                     ${focusedInput === 'password' && !errors.password ? 'border-[#66BB6A] bg-white' : ''}
                   `}
@@ -244,7 +246,7 @@ const KabadBechoLogin = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 bg-linear-to-r from-[#66BB6A] to-[#43A047] text-white font-bold text-lg rounded-xl shadow-lg shadow-green-200 hover:shadow-green-300 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2 relative overflow-hidden group"
+              className="w-full py-4 bg-linear-to-r from-[#66BB6A] to-[#43A047] text-white font-bold text-lg rounded-sm shadow-lg shadow-green-200 hover:shadow-green-300 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2 relative overflow-hidden group"
             >
               {isLoading ? (
                 <>
@@ -273,11 +275,11 @@ const KabadBechoLogin = () => {
 
           {/* Social Buttons */}
           <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 group">
+            <button className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-sm hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 group">
               <span className="text-xl group-hover:scale-110 transition-transform">G</span>
               <span className="text-sm font-semibold text-gray-600">Google</span>
             </button>
-            <button className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 group">
+            <button className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-sm hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 group">
               <span className="text-xl group-hover:scale-110 transition-transform">📱</span>
               <span className="text-sm font-semibold text-gray-600">Phone</span>
             </button>

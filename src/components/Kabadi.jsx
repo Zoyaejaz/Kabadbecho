@@ -25,6 +25,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../config';
 
 const KabadBechoDriverDashboard = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const KabadBechoDriverDashboard = () => {
     const email = localStorage.getItem('email') || '';
     if (email) {
       const token = localStorage.getItem('token');
-      fetch(`https://kabad-backend.onrender.com/api/pickups/collector?email=${encodeURIComponent(email)}`, {
+      fetch(`${API_URL}/api/pickups/collector?email=${encodeURIComponent(email)}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -134,7 +135,7 @@ const KabadBechoDriverDashboard = () => {
   const handleStartPickup = (pickup) => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
-    fetch(`https://kabad-backend.onrender.com/api/pickups/${pickup.id}/accept?email=${encodeURIComponent(email)}`, {
+    fetch(`${API_URL}/api/pickups/${pickup.id}/accept?email=${encodeURIComponent(email)}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -170,7 +171,7 @@ const KabadBechoDriverDashboard = () => {
     }
 
     const token = localStorage.getItem('token');
-    fetch(`https://kabad-backend.onrender.com/api/pickups/${pickup.id}/status`, {
+    fetch(`${API_URL}/api/pickups/${pickup.id}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -215,7 +216,7 @@ const KabadBechoDriverDashboard = () => {
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-sm transition-all duration-300 group ${
               activeTab === item.id
                 ? 'bg-gradient-to-r from-[#E8F5E9] to-[#F1F8E9] text-[#2E7D32]'
                 : 'text-gray-600 hover:bg-gray-50 hover:text-[#2E7D32]'
@@ -238,7 +239,7 @@ const KabadBechoDriverDashboard = () => {
       </nav>
 
       <div className="p-4 border-t border-gray-100">
-        <div className="bg-[#F1F8E9] rounded-xl p-4 flex items-center gap-3 mb-2">
+        <div className="bg-[#F1F8E9] rounded-sm p-4 flex items-center gap-3 mb-2">
           <div className="w-10 h-10 bg-[#C8E6C9] rounded-full flex items-center justify-center text-[#2E7D32] font-bold shadow-sm">
             {(driverStats.name || 'D').charAt(0)}
           </div>
@@ -249,7 +250,7 @@ const KabadBechoDriverDashboard = () => {
         </div>
         <button 
          onClick={handleSignOut}
-         className="w-full flex items-center justify-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm font-semibold">
+         className="w-full flex items-center justify-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-sm transition-colors text-sm font-semibold">
           <LogOut size={16} />
           <span>Sign Out</span>
         </button>
@@ -267,7 +268,7 @@ const KabadBechoDriverDashboard = () => {
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+            className={`flex flex-col items-center p-2 rounded-sm transition-colors ${
               activeTab === item.id ? 'text-[#2E7D32]' : 'text-gray-400'
             }`}
           >
@@ -281,7 +282,7 @@ const KabadBechoDriverDashboard = () => {
   const renderOverview = () => (
     <div className="animate-fadeIn">
       {/* Header */}
-      <section className="relative py-8 bg-gradient-to-br from-[#66BB6A] to-[#4CAF50] text-white overflow-hidden rounded-3xl mx-4 mb-6 shadow-lg mt-4">
+      <section className="relative py-8 bg-gradient-to-br from-[#66BB6A] to-[#4CAF50] text-white overflow-hidden rounded-sm mx-4 mb-6 shadow-lg mt-4">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl animate-blob"></div>
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl animate-blob animation-delay-2000"></div>
@@ -319,7 +320,7 @@ const KabadBechoDriverDashboard = () => {
               { icon: <Clock size={24} />, value: driverStats.pendingToday, label: 'Active/Pending' },
               { icon: <DollarSign size={24} />, value: driverStats.totalEarnings, label: "Total Earnings" }
             ].map((stat, idx) => (
-              <div key={idx} className="bg-white/20 backdrop-blur-sm p-4 rounded-xl border border-white/10 shadow-sm hover:bg-white/30 transition-colors">
+              <div key={idx} className="bg-white/20 backdrop-blur-sm p-4 rounded-sm border border-white/10 shadow-sm hover:bg-white/30 transition-colors">
                 <div className="flex items-center space-x-2 mb-2">
                   {stat.icon}
                 </div>
@@ -333,7 +334,7 @@ const KabadBechoDriverDashboard = () => {
 
       {/* Filter Tabs */}
       <section className="px-4 mb-6 overflow-x-auto">
-        <div className="flex gap-3 bg-white p-2 rounded-2xl shadow-sm inline-flex min-w-max">
+        <div className="flex gap-3 bg-white p-2 rounded-sm shadow-sm inline-flex min-w-max">
           {[
             { id: 'pending', label: 'Pending / Active', count: pickups.filter(p => p.status === 'pending').length },
             { id: 'completed', label: 'Completed', count: pickups.filter(p => p.status === 'completed').length }
@@ -341,7 +342,7 @@ const KabadBechoDriverDashboard = () => {
             <button
               key={tab.id}
               onClick={() => setFilterStatus(tab.id)}
-              className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-2 ${
+              className={`px-6 py-2.5 rounded-sm font-semibold transition-all duration-300 flex items-center space-x-2 ${
                 filterStatus === tab.id
                   ? 'bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] text-white shadow-md'
                   : 'text-gray-600 hover:bg-gray-100'
@@ -366,7 +367,7 @@ const KabadBechoDriverDashboard = () => {
             <p className="text-gray-500 font-semibold">Loading assignments...</p>
           </div>
         ) : filteredPickups.length === 0 ? (
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-12 text-center">
+          <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-12 text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-[#E8F5E9] rounded-full mb-4">
               <Package className="text-[#66BB6A]" size={40} />
             </div>
@@ -378,7 +379,7 @@ const KabadBechoDriverDashboard = () => {
             {filteredPickups.map((pickup) => (
               <div
                 key={pickup.id}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#66BB6A]/50"
+                className="bg-white rounded-sm shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#66BB6A]/50"
               >
                 <div className="p-6">
                   <div className="flex flex-col lg:flex-row gap-6">
@@ -409,7 +410,7 @@ const KabadBechoDriverDashboard = () => {
                       </div>
 
                       {/* Customer Info */}
-                      <div className="bg-[#F8FAF8] p-4 rounded-xl border border-gray-100 hover:border-[#66BB6A]/30 transition-colors">
+                      <div className="bg-[#F8FAF8] p-4 rounded-sm border border-gray-100 hover:border-[#66BB6A]/30 transition-colors">
                         <div className="flex items-center space-x-3 mb-3">
                           <div className="w-10 h-10 bg-gradient-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold shadow-md">
                             {(pickup.customer || 'C').charAt(0)}
@@ -423,7 +424,7 @@ const KabadBechoDriverDashboard = () => {
                           </div>
                           <a
                             href={`tel:${pickup.phone}`}
-                            className="p-2 bg-white border border-gray-200 rounded-lg hover:bg-[#66BB6A] hover:text-white hover:border-[#66BB6A] transition-all duration-300 shadow-sm"
+                            className="p-2 bg-white border border-gray-200 rounded-sm hover:bg-[#66BB6A] hover:text-white hover:border-[#66BB6A] transition-all duration-300 shadow-sm"
                           >
                             <Phone size={18} />
                           </a>
@@ -440,21 +441,21 @@ const KabadBechoDriverDashboard = () => {
 
                       {/* Details Grid */}
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <div className="bg-gray-50 p-3 rounded-sm border border-gray-100">
                           <div className="text-xs text-gray-500 mb-1 flex items-center gap-1"><Clock size={12}/> Time Slot</div>
                           <div className="font-semibold text-sm text-[#5D4037]">{pickup.scheduledTime}</div>
                         </div>
-                        <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <div className="bg-gray-50 p-3 rounded-sm border border-gray-100">
                           <div className="text-xs text-gray-500 mb-1 flex items-center gap-1"><Navigation size={12}/> Distance</div>
                           <div className="font-semibold text-sm text-[#5D4037]">{pickup.distance}</div>
                         </div>
-                        <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <div className="bg-gray-50 p-3 rounded-sm border border-gray-100">
                           <div className="text-xs text-gray-500 mb-1 flex items-center gap-1"><Scale size={12}/> Weight</div>
                           <div className="font-semibold text-sm text-[#5D4037]">
                             {pickup.status === 'completed' ? pickup.actualWeight : pickup.estimatedWeight}
                           </div>
                         </div>
-                        <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <div className="bg-gray-50 p-3 rounded-sm border border-gray-100">
                           <div className="text-xs text-gray-500 mb-1 flex items-center gap-1"><DollarSign size={12}/> Amount</div>
                           <div className="font-semibold text-sm text-[#66BB6A]">
                             {pickup.status === 'completed' ? pickup.collectedAmount : pickup.expectedAmount}
@@ -470,19 +471,19 @@ const KabadBechoDriverDashboard = () => {
                           {pickup.realStatus === 'PENDING' ? (
                             <button
                               onClick={() => handleStartPickup(pickup)}
-                              className="flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                              className="flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                             >
                               <CheckCircle size={18} />
                               <span>Accept Trip</span>
                             </button>
                           ) : (
                             <>
-                              <div className="text-center p-2 bg-[#E8F5E9] rounded-xl text-[#2E7D32] font-bold text-xs border border-[#C8E6C9]">
+                              <div className="text-center p-2 bg-[#E8F5E9] rounded-sm text-[#2E7D32] font-bold text-xs border border-[#C8E6C9]">
                                 Accepted - On the Way
                               </div>
                               <button
                                 onClick={() => handleOpenCompleteModal(pickup)}
-                                className="flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                                className="flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                               >
                                 <Scale size={18} />
                                 <span>Weigh & Pay</span>
@@ -491,7 +492,7 @@ const KabadBechoDriverDashboard = () => {
                           )}
                         </>
                       ) : (
-                        <div className="h-full flex flex-col items-center justify-center bg-green-50 rounded-xl p-4 border border-green-100">
+                        <div className="h-full flex flex-col items-center justify-center bg-green-50 rounded-sm p-4 border border-green-100">
                            <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-2">
                               <Award size={24} />
                            </div>
@@ -520,15 +521,15 @@ const KabadBechoDriverDashboard = () => {
              <h2 className="text-2xl font-bold text-[#5D4037]">Previous Pickups</h2>
              <p className="text-gray-500 mt-1">History of all your completed trips</p>
            </div>
-           <div className="bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
+           <div className="bg-white p-2 rounded-sm border border-gray-200 shadow-sm">
               <Calendar className="text-gray-500" size={20} />
            </div>
         </div>
 
         <div className="grid gap-6">
           {historyPickups.map((pickup, idx) => (
-             <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6 hover:shadow-md transition-shadow">
-                <div className="w-16 h-16 bg-[#E8F5E9] rounded-2xl flex items-center justify-center text-3xl">
+             <div key={idx} className="bg-white p-6 rounded-sm shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6 hover:shadow-md transition-shadow">
+                <div className="w-16 h-16 bg-[#E8F5E9] rounded-sm flex items-center justify-center text-3xl">
                    {pickup.emoji}
                 </div>
                 <div className="flex-1 text-center md:text-left">
@@ -557,7 +558,7 @@ const KabadBechoDriverDashboard = () => {
     <div className="p-8 max-w-4xl mx-auto animate-fadeIn pb-24 md:pb-8">
       <h2 className="text-2xl font-bold text-[#5D4037] mb-6">Profile Settings</h2>
       
-      <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-sm shadow-lg border border-gray-100 overflow-hidden">
          <div className="h-32 bg-gradient-to-r from-[#66BB6A] to-[#4CAF50]"></div>
          <div className="px-8 pb-8 relative">
             <div className="absolute -top-16 left-8">
@@ -573,7 +574,7 @@ const KabadBechoDriverDashboard = () => {
                   <h3 className="text-2xl font-bold text-[#5D4037]">{driverStats.name}</h3>
                   <p className="text-gray-500">{driverStats.id} • Joined {driverStats.joinedDate}</p>
                </div>
-               <button className="px-6 py-2 bg-[#2E7D32] text-white rounded-xl font-semibold hover:bg-[#1B5E20] transition-colors shadow-md">
+               <button className="px-6 py-2 bg-[#2E7D32] text-white rounded-sm font-semibold hover:bg-[#1B5E20] transition-colors shadow-md">
                   Save Changes
                </button>
             </div>
@@ -583,15 +584,15 @@ const KabadBechoDriverDashboard = () => {
                   <h4 className="font-bold text-gray-900 border-b pb-2">Personal Information</h4>
                   <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                     <input type="text" defaultValue={driverStats.name} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none" />
+                     <input type="text" defaultValue={driverStats.name} className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:outline-none" />
                   </div>
                   <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                     <input type="email" defaultValue={driverStats.email} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none" />
+                     <input type="email" defaultValue={driverStats.email} className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:outline-none" />
                   </div>
                   <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                     <input type="tel" defaultValue={driverStats.phone} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none" />
+                     <input type="tel" defaultValue={driverStats.phone} className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:outline-none" />
                   </div>
                </div>
                
@@ -599,7 +600,7 @@ const KabadBechoDriverDashboard = () => {
                   <h4 className="font-bold text-gray-900 border-b pb-2">Vehicle Details</h4>
                   <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
-                     <select className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none">
+                     <select className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:outline-none">
                         <option>Mini Tempo (Tata Ace)</option>
                         <option>Pickup Truck</option>
                         <option>Three Wheeler</option>
@@ -607,7 +608,7 @@ const KabadBechoDriverDashboard = () => {
                   </div>
                   <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Number</label>
-                     <input type="text" defaultValue={driverStats.vehicleNo} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none" />
+                     <input type="text" defaultValue={driverStats.vehicleNo} className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:outline-none" />
                   </div>
                </div>
             </div>
@@ -629,7 +630,7 @@ const KabadBechoDriverDashboard = () => {
       {/* Complete Pickup Modal */}
       {selectedPickup && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-sm shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] p-6 text-white relative">
               <button
                 onClick={() => setSelectedPickup(null)}
@@ -656,7 +657,7 @@ const KabadBechoDriverDashboard = () => {
                     value={actualWeightInput}
                     onChange={(e) => setActualWeightInput(e.target.value)}
                     placeholder="Enter weight in kg"
-                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
                   />
                 </div>
               </div>
@@ -675,7 +676,7 @@ const KabadBechoDriverDashboard = () => {
                     value={collectedAmountInput}
                     onChange={(e) => setCollectedAmountInput(e.target.value)}
                     placeholder="Enter amount"
-                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
                   />
                 </div>
               </div>
@@ -685,7 +686,7 @@ const KabadBechoDriverDashboard = () => {
                 <label className="block text-sm font-semibold text-[#5D4037] mb-2">
                   Upload Photos (Verification)
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center bg-gray-50">
+                <div className="border-2 border-dashed border-gray-300 rounded-sm p-4 text-center bg-gray-50">
                   <Camera className="mx-auto text-gray-400 mb-2" size={32} />
                   <p className="text-gray-600 text-xs">Verify scales and scrap items</p>
                 </div>
@@ -701,7 +702,7 @@ const KabadBechoDriverDashboard = () => {
                   onChange={(e) => setNotesInput(e.target.value)}
                   placeholder="Any extra feedback"
                   rows="2"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300 resize-none"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none focus:border-[#66BB6A] transition-all duration-300 resize-none"
                 />
               </div>
 
@@ -709,13 +710,13 @@ const KabadBechoDriverDashboard = () => {
               <div className="flex gap-3">
                 <button
                   onClick={() => setSelectedPickup(null)}
-                  className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all duration-300"
+                  className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-sm hover:bg-gray-200 transition-all duration-300"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => handleCompletePickupSubmit(selectedPickup)}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-sm hover:shadow-lg transition-all duration-300"
                 >
                   Confirm Completion
                 </button>

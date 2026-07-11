@@ -19,11 +19,51 @@ import {
   MessageSquare,
   X
 } from 'lucide-react';
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import API_URL from "../../config";
 
 const KabadBechoTrackPickup = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [selectedPickup, setSelectedPickup] = useState(null);
+
+  const handleDownload = (pickup) => {
+    if (!pickup) return;
+    const doc = new jsPDF();
+    
+    doc.setFontSize(22);
+    doc.setTextColor(46, 125, 50); // #2E7D32
+    doc.text("KabadBecho Receipt", 14, 20);
+    
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+    doc.text(`Receipt ID: ${pickup.id}`, 14, 30);
+    doc.text(`Date of Generation: ${new Date().toLocaleDateString()}`, 14, 36);
+
+    const tableData = [
+      ["Date & Time", `${pickup.date} ${pickup.time}`],
+      ["Scrap Type", pickup.scrapType],
+      ["Weight", pickup.weight],
+      ["Earnings", pickup.amount],
+      ["Status", pickup.status]
+    ];
+
+    autoTable(doc, {
+      startY: 45,
+      head: [['Detail', 'Value']],
+      body: tableData,
+      theme: 'striped',
+      headStyles: { fillColor: [102, 187, 106] },
+      alternateRowStyles: { fillColor: [248, 250, 248] },
+    });
+
+    doc.setFontSize(10);
+    doc.setTextColor(150);
+    doc.text("Thank you for recycling and saving the planet with KabadBecho!", 14, 110);
+
+    doc.save(`Receipt_${pickup.id}.pdf`);
+  };
 
   const [pickups, setPickups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +72,7 @@ const KabadBechoTrackPickup = () => {
     const userEmail = localStorage.getItem('email') || '';
     if (userEmail) {
       const token = localStorage.getItem('token');
-      fetch(`https://kabad-backend.onrender.com/api/pickups/user?email=${encodeURIComponent(userEmail)}`, {
+      fetch(`${API_URL}/api/pickups/user?email=${encodeURIComponent(userEmail)}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -69,6 +109,7 @@ const KabadBechoTrackPickup = () => {
               return {
                 id: 'KB' + item.id,
                 date: item.date,
+                bookedAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A',
                 time: item.time === 'morning' ? '09:00 AM - 12:00 PM' : item.time === 'afternoon' ? '12:00 PM - 03:00 PM' : '03:00 PM - 06:00 PM',
                 scrapType: item.scrapType,
                 emoji,
@@ -84,6 +125,9 @@ const KabadBechoTrackPickup = () => {
                 statusHistory: history
               };
             });
+            // Sort latest pickups first
+            formatted.sort((a, b) => parseInt(b.id.replace('KB', '')) - parseInt(a.id.replace('KB', '')));
+            
             setPickups(formatted);
           }
         })
@@ -160,11 +204,11 @@ const KabadBechoTrackPickup = () => {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl">
+              <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-sm">
                 <div className="text-sm text-green-100">Total Pickups</div>
                 <div className="text-2xl font-bold">{pickups.length}</div>
               </div>
-              <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl">
+              <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-sm">
                 <div className="text-sm text-green-100">Completed</div>
                 <div className="text-2xl font-bold">{pickups.filter(p => p.status === 'completed').length}</div>
               </div>
@@ -187,7 +231,7 @@ const KabadBechoTrackPickup = () => {
                 placeholder="Search by Booking ID or Scrap Type"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
               />
             </div>
 
@@ -197,7 +241,7 @@ const KabadBechoTrackPickup = () => {
                 <button
                   key={status}
                   onClick={() => setFilterStatus(status)}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 capitalize ${
+                  className={`px-6 py-3 rounded-sm font-semibold transition-all duration-300 capitalize ${
                     filterStatus === status
                       ? 'bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white shadow-lg'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -215,7 +259,7 @@ const KabadBechoTrackPickup = () => {
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredPickups.length === 0 ? (
-            <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
+            <div className="bg-white rounded-sm shadow-lg p-12 text-center">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-[#E8F5E9] rounded-full mb-4">
                 <Package className="text-[#66BB6A]" size={40} />
               </div>
@@ -229,7 +273,7 @@ const KabadBechoTrackPickup = () => {
                 return (
                   <div
                     key={pickup.id}
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-100 hover:border-[#66BB6A]"
+                    className="bg-white rounded-sm shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-100 hover:border-[#66BB6A]"
                   >
                     {/* Header */}
                     <div className={`bg-linear-to-r ${getStatusColor(pickup.status)} p-6 text-white`}>
@@ -262,18 +306,18 @@ const KabadBechoTrackPickup = () => {
                     <div className="p-6 space-y-4">
                       {/* Scrap Details */}
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-[#E8F5E9] p-4 rounded-xl">
+                        <div className="bg-[#E8F5E9] p-4 rounded-sm">
                           <div className="text-sm text-gray-600 mb-1">Scrap Type</div>
                           <div className="font-bold text-[#5D4037]">{pickup.scrapType}</div>
                         </div>
-                        <div className="bg-[#E8F5E9] p-4 rounded-xl">
+                        <div className="bg-[#E8F5E9] p-4 rounded-sm">
                           <div className="text-sm text-gray-600 mb-1">Weight</div>
                           <div className="font-bold text-[#5D4037]">{pickup.weight}</div>
                         </div>
                       </div>
 
                       {/* Address */}
-                      <div className="flex items-start space-x-3 p-4 bg-gray-50 rounded-xl">
+                      <div className="flex items-start space-x-3 p-4 bg-gray-50 rounded-sm">
                         <MapPin className="text-[#66BB6A] shrink-0 mt-1" size={18} />
                         <div>
                           <div className="text-sm text-gray-600 mb-1">Pickup Address</div>
@@ -283,7 +327,7 @@ const KabadBechoTrackPickup = () => {
 
                       {/* Driver Info */}
                       {pickup.status !== 'scheduled' && (
-                        <div className="flex items-center space-x-3 p-4 bg-linear-to-r from-[#E8F5E9] to-white rounded-xl border-l-4 border-[#66BB6A]">
+                        <div className="flex items-center space-x-3 p-4 bg-linear-to-r from-[#E8F5E9] to-white rounded-sm border-l-4 border-[#66BB6A]">
                           <div className="w-12 h-12 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold text-lg">
                             {(pickup.driverName || 'S').charAt(0)}
                           </div>
@@ -298,7 +342,7 @@ const KabadBechoTrackPickup = () => {
                       )}
 
                       {/* Amount */}
-                      <div className="flex items-center justify-between p-4 bg-linear-to-r from-[#66BB6A]/10 to-[#4CAF50]/10 rounded-xl">
+                      <div className="flex items-center justify-between p-4 bg-linear-to-r from-[#66BB6A]/10 to-[#4CAF50]/10 rounded-sm">
                         <div className="flex items-center space-x-2">
                           <DollarSign className="text-[#66BB6A]" size={20} />
                           <span className="text-gray-700 font-medium">Total Amount</span>
@@ -308,7 +352,7 @@ const KabadBechoTrackPickup = () => {
 
                       {/* Rating (for completed) */}
                       {pickup.status === 'completed' && pickup.rating && (
-                        <div className="flex items-center justify-center space-x-2 p-3 bg-yellow-50 rounded-xl">
+                        <div className="flex items-center justify-center space-x-2 p-3 bg-yellow-50 rounded-sm">
                           <span className="text-sm text-gray-700 font-medium">Your Rating:</span>
                           <div className="flex space-x-1">
                             {[...Array(5)].map((_, idx) => (
@@ -326,13 +370,13 @@ const KabadBechoTrackPickup = () => {
                       <div className="flex gap-3">
                         <button
                           onClick={() => setSelectedPickup(pickup)}
-                          className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                          className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-semibold rounded-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                         >
                           <Eye size={18} />
                           <span>View Details</span>
                         </button>
                         {pickup.status !== 'scheduled' && (
-                          <button className="flex items-center justify-center space-x-2 px-4 py-3 bg-white border-2 border-[#66BB6A] text-[#66BB6A] font-semibold rounded-xl hover:bg-[#E8F5E9] transition-all duration-300">
+                          <button className="flex items-center justify-center space-x-2 px-4 py-3 bg-white border-2 border-[#66BB6A] text-[#66BB6A] font-semibold rounded-sm hover:bg-[#E8F5E9] transition-all duration-300">
                             <Phone size={18} />
                           </button>
                         )}
@@ -349,7 +393,7 @@ const KabadBechoTrackPickup = () => {
       {/* Detail Modal */}
       {selectedPickup && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-sm shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className={`bg-linear-to-r ${getStatusColor(selectedPickup.status)} p-8 text-white relative`}>
               <button
@@ -374,19 +418,23 @@ const KabadBechoTrackPickup = () => {
               <div>
                 <h3 className="text-xl font-bold text-[#5D4037] mb-4">Pickup Information</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-[#E8F5E9] p-4 rounded-xl">
-                    <div className="text-sm text-gray-600 mb-1">Date</div>
+                  <div className="bg-[#E8F5E9] p-4 rounded-sm">
+                    <div className="text-sm text-gray-600 mb-1">Booked On</div>
+                    <div className="font-bold text-[#5D4037]">{selectedPickup.bookedAt}</div>
+                  </div>
+                  <div className="bg-[#E8F5E9] p-4 rounded-sm">
+                    <div className="text-sm text-gray-600 mb-1">Scheduled Date</div>
                     <div className="font-bold text-[#5D4037]">{selectedPickup.date}</div>
                   </div>
-                  <div className="bg-[#E8F5E9] p-4 rounded-xl">
+                  <div className="bg-[#E8F5E9] p-4 rounded-sm">
                     <div className="text-sm text-gray-600 mb-1">Time Slot</div>
                     <div className="font-bold text-[#5D4037]">{selectedPickup.time}</div>
                   </div>
-                  <div className="bg-[#E8F5E9] p-4 rounded-xl">
+                  <div className="bg-[#E8F5E9] p-4 rounded-sm">
                     <div className="text-sm text-gray-600 mb-1">Weight</div>
                     <div className="font-bold text-[#5D4037]">{selectedPickup.weight}</div>
                   </div>
-                  <div className="bg-[#E8F5E9] p-4 rounded-xl">
+                  <div className="bg-[#E8F5E9] p-4 rounded-sm col-span-2 text-center">
                     <div className="text-sm text-gray-600 mb-1">Amount</div>
                     <div className="font-bold text-[#66BB6A] text-xl">{selectedPickup.amount}</div>
                   </div>
@@ -432,21 +480,21 @@ const KabadBechoTrackPickup = () => {
               <div>
                 <h3 className="text-xl font-bold text-[#5D4037] mb-4">Contact Information</h3>
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-sm">
                     <User className="text-[#66BB6A]" size={20} />
                     <div>
                       <div className="text-sm text-gray-600">Customer</div>
                       <div className="font-medium text-gray-700">{selectedPickup.customer}</div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-sm">
                     <Phone className="text-[#66BB6A]" size={20} />
                     <div>
                       <div className="text-sm text-gray-600">Phone</div>
                       <div className="font-medium text-gray-700">{selectedPickup.phone}</div>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-3 p-4 bg-gray-50 rounded-xl">
+                  <div className="flex items-start space-x-3 p-4 bg-gray-50 rounded-sm">
                     <MapPin className="text-[#66BB6A] shrink-0 mt-1" size={20} />
                     <div>
                       <div className="text-sm text-gray-600">Address</div>
@@ -458,12 +506,15 @@ const KabadBechoTrackPickup = () => {
 
               {/* Action Buttons */}
               <div className="flex gap-3">
-                <button className="flex-1 flex items-center justify-center space-x-2 px-6 py-3 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-bold rounded-xl hover:shadow-lg transition-all duration-300">
+                <button 
+                  onClick={() => handleDownload(selectedPickup)}
+                  className="flex-1 flex items-center justify-center space-x-2 px-6 py-3 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-bold rounded-sm hover:shadow-lg transition-all duration-300"
+                >
                   <Download size={20} />
                   <span>Download Invoice</span>
                 </button>
                 {selectedPickup.status === 'completed' && !selectedPickup.rating && (
-                  <button className="flex-1 flex items-center justify-center space-x-2 px-6 py-3 bg-white border-2 border-[#66BB6A] text-[#66BB6A] font-bold rounded-xl hover:bg-[#E8F5E9] transition-all duration-300">
+                  <button className="flex-1 flex items-center justify-center space-x-2 px-6 py-3 bg-white border-2 border-[#66BB6A] text-[#66BB6A] font-bold rounded-sm hover:bg-[#E8F5E9] transition-all duration-300">
                     <Star size={20} />
                     <span>Rate Service</span>
                   </button>

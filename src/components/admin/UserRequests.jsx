@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Search, Filter, Eye, Check, X, Calendar, MapPin, 
-  Phone, User, Package, Clock, ChevronDown 
 } from 'lucide-react';
+import API_URL from '../../config';
 
 const UserRequests = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -16,7 +16,7 @@ const UserRequests = () => {
 
   const loadRequests = () => {
     const token = localStorage.getItem('token');
-    fetch('https://kabad-backend.onrender.com/api/admin/pickups', {
+    fetch(`${API_URL}/api/admin/pickups`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -77,7 +77,7 @@ const UserRequests = () => {
 
   const handleAccept = (realId) => {
     const token = localStorage.getItem('token');
-    fetch(`https://kabad-backend.onrender.com/api/pickups/${realId}/accept`, {
+    fetch(`${API_URL}/api/pickups/${realId}/accept`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -119,7 +119,7 @@ const UserRequests = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-4 rounded-sm shadow-sm border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Search */}
           <div className="relative">
@@ -129,7 +129,7 @@ const UserRequests = () => {
               placeholder="Search by name or ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
             />
           </div>
 
@@ -139,7 +139,7 @@ const UserRequests = () => {
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -155,7 +155,7 @@ const UserRequests = () => {
             <select
               value={selectedScrapType}
               onChange={(e) => setSelectedScrapType(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
             >
               <option value="all">All Scrap Types</option>
               <option value="plastic">Plastic</option>
@@ -168,13 +168,13 @@ const UserRequests = () => {
           {/* Date Filter */}
           <input
             type="date"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
           />
         </div>
       </div>
 
       {/* Requests Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           {isLoading ? (
             <div className="text-center py-12">
@@ -247,7 +247,7 @@ const UserRequests = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => setSelectedRequest(request)}
-                          className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-lg transition-colors"
+                          className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-sm transition-colors"
                           title="View Details"
                         >
                           <Eye size={18} />
@@ -256,7 +256,7 @@ const UserRequests = () => {
                           <>
                             <button
                               onClick={() => handleAccept(request.realId)}
-                              className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-lg transition-colors cursor-pointer"
+                              className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-sm transition-colors cursor-pointer"
                               title="Accept"
                             >
                               <Check size={18} />
@@ -266,7 +266,7 @@ const UserRequests = () => {
                                 setSelectedRequest(request);
                                 setShowDenyModal(true);
                               }}
-                              className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                              className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-sm transition-colors cursor-pointer"
                               title="Deny"
                             >
                               <X size={18} />
@@ -293,12 +293,12 @@ const UserRequests = () => {
       {/* View Details Modal */}
       {selectedRequest && !showDenyModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-sm max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
               <h3 className="text-xl font-bold text-[#5D4037]">Request Details</h3>
               <button
                 onClick={() => setSelectedRequest(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-sm transition-colors"
               >
                 <X size={24} />
               </button>
@@ -306,7 +306,7 @@ const UserRequests = () => {
             
             <div className="p-6 space-y-6">
               {/* Status Timeline */}
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-gray-50 p-4 rounded-sm">
                 <h4 className="font-semibold mb-3 text-gray-700">Status Timeline</h4>
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -431,13 +431,13 @@ const UserRequests = () => {
       {/* Deny Modal */}
       {showDenyModal && selectedRequest && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full">
+          <div className="bg-white rounded-sm max-w-md w-full">
             <div className="p-6 border-b border-gray-200">
               <h3 className="text-xl font-bold text-[#5D4037]">Deny Request</h3>
             </div>
             <div className="p-6 space-y-4">
               <p className="text-gray-600">Select a reason for denying request {selectedRequest.id}:</p>
-              <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+              <select className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-red-500 focus:border-transparent">
                 <option value="">Select reason...</option>
                 <option value="Location out of service area">Location out of service area</option>
                 <option value="Insufficient quantity">Insufficient quantity</option>
@@ -447,20 +447,20 @@ const UserRequests = () => {
               </select>
               <textarea
                 placeholder="Additional notes (optional)"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 rows="3"
               />
             </div>
             <div className="p-6 border-t border-gray-200 flex gap-3">
               <button
                 onClick={() => setShowDenyModal(false)}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDeny(selectedRequest.realId, 'Location out of service area')}
-                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors"
               >
                 Deny Request
               </button>

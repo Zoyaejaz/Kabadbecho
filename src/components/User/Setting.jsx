@@ -13,11 +13,16 @@ import {
   CheckCircle,
   LogOut,
   HelpCircle,
-  Settings
+  Settings,
+  Edit2,
+  X
 } from 'lucide-react';
+import API_URL from '../../config';
 
 const KabadBechoSettings = () => {
   const [activeTab, setActiveTab] = useState('profile');
+  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingSecurity, setIsEditingSecurity] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -31,7 +36,8 @@ const KabadBechoSettings = () => {
     city: 'Mumbai',
     state: 'Maharashtra',
     pincode: '400001',
-    alternatePhone: '9876543211'
+    alternatePhone: '9876543211',
+    profilePicUrl: ''
   });
 
   useEffect(() => {
@@ -40,7 +46,7 @@ const KabadBechoSettings = () => {
     const token = localStorage.getItem('token');
 
     if (email) {
-      fetch(`https://kabad-backend.onrender.com/api/users/profile?email=${encodeURIComponent(email)}`, {
+      fetch(`${API_URL}/api/users/profile?email=${encodeURIComponent(email)}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.json())
@@ -54,7 +60,8 @@ const KabadBechoSettings = () => {
             city: data.city || '',
             state: data.state || '',
             pincode: data.pincode || '',
-            alternatePhone: data.altPhone || ''
+            alternatePhone: data.altPhone || '',
+            profilePicUrl: data.profilePicUrl || ''
           });
         }
       })
@@ -85,6 +92,17 @@ const KabadBechoSettings = () => {
     weeklyReport: true
   });
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileData({ ...profileData, profilePicUrl: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleProfileChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
   };
@@ -109,10 +127,11 @@ const KabadBechoSettings = () => {
         altPhone: profileData.alternatePhone,
         city: profileData.city,
         state: profileData.state,
-        pincode: profileData.pincode
+        pincode: profileData.pincode,
+        profilePicUrl: profileData.profilePicUrl
       };
 
-      fetch(`https://kabad-backend.onrender.com/api/users/profile?email=${encodeURIComponent(email)}`, {
+      fetch(`${API_URL}/api/users/profile?email=${encodeURIComponent(email)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -125,6 +144,7 @@ const KabadBechoSettings = () => {
           const updatedUser = await res.json();
           localStorage.setItem('name', updatedUser.name);
           setSaveSuccess(true);
+          setIsEditing(false);
           setTimeout(() => setSaveSuccess(false), 3000);
         } else {
           alert("Failed to save profile.");
@@ -152,7 +172,7 @@ const KabadBechoSettings = () => {
       
       const email = localStorage.getItem('email');
       const token = localStorage.getItem('token');
-      fetch(`https://kabad-backend.onrender.com/api/auth/password?email=${encodeURIComponent(email)}`, {
+      fetch(`${API_URL}/api/auth/password?email=${encodeURIComponent(email)}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -163,6 +183,7 @@ const KabadBechoSettings = () => {
       .then(async (res) => {
           if(res.ok) {
               setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: ''});
+              setIsEditingSecurity(false);
               setSaveSuccess(true);
               setTimeout(() => setSaveSuccess(false), 3000);
           } else {
@@ -179,8 +200,7 @@ const KabadBechoSettings = () => {
 
   const quickTabs = [
     { id: 'profile', label: 'Profile', icon: <User size={20} /> },
-    { id: 'security', label: 'Security', icon: <Lock size={20} /> },
-    { id: 'notifications', label: 'Notifications', icon: <Bell size={20} /> }
+    { id: 'security', label: 'Security', icon: <Lock size={20} /> }
   ];
 
   return (
@@ -208,19 +228,19 @@ const KabadBechoSettings = () => {
       {/* Success Message */}
       {saveSuccess && (
         <div className="fixed top-4 right-4 z-50 animate-slideIn">
-          <div className="bg-white rounded-xl shadow-2xl p-4 flex items-center space-x-3 border-l-4 border-[#66BB6A]">
+          <div className="bg-white rounded-sm shadow-2xl p-4 flex items-center space-x-3 border-l-4 border-[#66BB6A]">
             <CheckCircle className="text-[#66BB6A]" size={24} />
             <span className="text-gray-700 font-semibold">Settings saved successfully!</span>
           </div>
         </div>
       )}
       {/* Quick cards UI */}
-      <div className="max-w-7xl mx-auto px-6 mt-10 grid md:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto px-6 mt-10 grid md:grid-cols-2 max-w-3xl gap-6">
         {quickTabs.map(t => (
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className={`p-6 rounded-2xl text-left border transition shadow-sm hover:shadow-lg ${
+            className={`p-6 rounded-sm text-left border transition shadow-sm hover:shadow-lg ${
               activeTab === t.id
                 ? "bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white"
                 : "bg-white"
@@ -247,31 +267,64 @@ const KabadBechoSettings = () => {
 
             {/* Content Area */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-2xl shadow-lg p-8">
+              <div className="bg-white rounded-sm shadow-lg p-8">
                 {/* Profile Settings */}
                 {activeTab === 'profile' && (
                   <div className="space-y-8">
-                    <div>
-                      <h2 className="text-3xl font-bold text-[#5D4037] mb-2">Profile Information</h2>
-                      <p className="text-gray-600">Update your personal details and contact information</p>
+                    <div className="flex justify-between items-start mb-6">
+                      <div>
+                        <h2 className="text-3xl font-bold text-[#5D4037] mb-2">Profile Information</h2>
+                        <p className="text-gray-600">Review your profile details. Click the pencil icon to edit.</p>
+                      </div>
+                      <button 
+                        onClick={() => setIsEditing(!isEditing)}
+                        className={`p-3 rounded-full transition-colors duration-300 shadow-md flex items-center justify-center ${isEditing ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100' : 'bg-[#E8F5E9] text-[#66BB6A] hover:bg-[#66BB6A] hover:text-white'}`}
+                        title={isEditing ? "Cancel editing" : "Edit Profile"}
+                      >
+                        {isEditing ? <X size={20} /> : <Edit2 size={20} />} 
+                      </button>
                     </div>
 
                     {/* Profile Picture */}
                     <div className="flex items-center space-x-6">
                       <div className="relative">
-                        <div className="w-24 h-24 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                          {profileData.name.charAt(0)}
+                        <div className="w-24 h-24 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg overflow-hidden border-2 border-white">
+                          {profileData.profilePicUrl ? (
+                            <img src={profileData.profilePicUrl} alt="Profile" className="w-full h-full object-cover" />
+                          ) : (
+                            profileData.name.charAt(0).toUpperCase()
+                          )}
                         </div>
-                        <button className="absolute bottom-0 right-0 w-8 h-8 bg-white border-2 border-[#66BB6A] rounded-full flex items-center justify-center hover:bg-[#E8F5E9] transition-colors duration-300 shadow-md">
-                          <Camera size={16} className="text-[#66BB6A]" />
-                        </button>
+                        {isEditing && (
+                          <>
+                            <button 
+                              onClick={() => document.getElementById('profilePicUpload').click()}
+                              className="absolute bottom-0 right-0 w-8 h-8 bg-white border-2 border-[#66BB6A] rounded-full flex items-center justify-center hover:bg-[#E8F5E9] transition-colors duration-300 shadow-md"
+                              title="Upload or take a photo"
+                            >
+                              <Camera size={16} className="text-[#66BB6A]" />
+                            </button>
+                            <input 
+                              id="profilePicUpload" 
+                              type="file" 
+                              accept="image/*;capture=camera" 
+                              className="hidden" 
+                              onChange={handleImageUpload} 
+                            />
+                          </>
+                        )}
                       </div>
                       <div>
                         <h3 className="font-bold text-[#5D4037] text-lg">{profileData.name}</h3>
                         <p className="text-gray-600 text-sm">{profileData.email}</p>
-                        <button className="text-[#66BB6A] text-sm font-semibold hover:text-[#4CAF50] mt-1">
-                          Change Profile Picture
-                        </button>
+                        {isEditing && (
+                          <button 
+                            onClick={() => document.getElementById('profilePicUpload').click()}
+                            className="text-[#66BB6A] text-sm font-semibold hover:text-[#4CAF50] mt-1"
+                          >
+                            Change Profile Picture
+                          </button>
+                        )}
                       </div>
                     </div>
 
@@ -290,7 +343,8 @@ const KabadBechoSettings = () => {
                             name="name"
                             value={profileData.name}
                             onChange={handleProfileChange}
-                            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                            disabled={!isEditing}
+                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                           />
                         </div>
                       </div>
@@ -308,7 +362,9 @@ const KabadBechoSettings = () => {
                             name="email"
                             value={profileData.email}
                             onChange={handleProfileChange}
-                            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                            disabled={true}
+                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 bg-gray-50 text-gray-500 opacity-80 cursor-not-allowed`}
+                            title="Email cannot be changed"
                           />
                         </div>
                       </div>
@@ -326,7 +382,8 @@ const KabadBechoSettings = () => {
                             name="phone"
                             value={profileData.phone}
                             onChange={handleProfileChange}
-                            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                            disabled={!isEditing}
+                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                           />
                         </div>
                       </div>
@@ -344,7 +401,8 @@ const KabadBechoSettings = () => {
                             name="alternatePhone"
                             value={profileData.alternatePhone}
                             onChange={handleProfileChange}
-                            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                            disabled={!isEditing}
+                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                           />
                         </div>
                       </div>
@@ -362,7 +420,8 @@ const KabadBechoSettings = () => {
                             value={profileData.address}
                             onChange={handleProfileChange}
                             rows="2"
-                            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300 resize-none"
+                            disabled={!isEditing}
+                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 resize-none ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                           />
                         </div>
                       </div>
@@ -374,7 +433,8 @@ const KabadBechoSettings = () => {
                           name="city"
                           value={profileData.city}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                          disabled={!isEditing}
+                          className={`w-full px-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                         />
                       </div>
 
@@ -385,7 +445,8 @@ const KabadBechoSettings = () => {
                           name="state"
                           value={profileData.state}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                          disabled={!isEditing}
+                          className={`w-full px-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                         />
                       </div>
 
@@ -396,27 +457,39 @@ const KabadBechoSettings = () => {
                           name="pincode"
                           value={profileData.pincode}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                          disabled={!isEditing}
+                          className={`w-full px-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                         />
                       </div>
                     </div>
 
-                    <button
-                      onClick={handleSave}
-                      className="w-full py-4 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-bold text-lg rounded-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2"
-                    >
-                      <Save size={22} />
-                      <span>Save Changes</span>
-                    </button>
+                    {isEditing && (
+                      <button
+                        onClick={handleSave}
+                        className="w-full py-4 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-bold text-lg rounded-sm shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2"
+                      >
+                        <Save size={22} />
+                        <span>Save Changes</span>
+                      </button>
+                    )}
                   </div>
                 )}
 
                 {/* Security Settings */}
                 {activeTab === 'security' && (
                   <div className="space-y-8">
-                    <div>
-                      <h2 className="text-3xl font-bold text-[#5D4037] mb-2">Security Settings</h2>
-                      <p className="text-gray-600">Manage your password and account security</p>
+                    <div className="flex justify-between items-start mb-6">
+                      <div>
+                        <h2 className="text-3xl font-bold text-[#5D4037] mb-2">Security Settings</h2>
+                        <p className="text-gray-600">Manage your password and account security. Click the pencil icon to edit.</p>
+                      </div>
+                      <button 
+                        onClick={() => setIsEditingSecurity(!isEditingSecurity)}
+                        className={`p-3 rounded-full transition-colors duration-300 shadow-md flex items-center justify-center ${isEditingSecurity ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100' : 'bg-[#E8F5E9] text-[#66BB6A] hover:bg-[#66BB6A] hover:text-white'}`}
+                        title={isEditingSecurity ? "Cancel editing" : "Edit Security"}
+                      >
+                        {isEditingSecurity ? <X size={20} /> : <Edit2 size={20} />} 
+                      </button>
                     </div>
 
                     <div className="space-y-6">
@@ -431,7 +504,8 @@ const KabadBechoSettings = () => {
                             name="currentPassword"
                             value={passwordData.currentPassword}
                             onChange={handlePasswordChange}
-                            className="w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                            disabled={!isEditingSecurity}
+                            className={`w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditingSecurity ? 'bg-gray-50 text-gray-400 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                           />
                           <button
                             type="button"
@@ -454,7 +528,8 @@ const KabadBechoSettings = () => {
                             name="newPassword"
                             value={passwordData.newPassword}
                             onChange={handlePasswordChange}
-                            className="w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                            disabled={!isEditingSecurity}
+                            className={`w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditingSecurity ? 'bg-gray-50 text-gray-400 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                           />
                           <button
                             type="button"
@@ -477,7 +552,8 @@ const KabadBechoSettings = () => {
                             name="confirmPassword"
                             value={passwordData.confirmPassword}
                             onChange={handlePasswordChange}
-                            className="w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#66BB6A] transition-all duration-300"
+                            disabled={!isEditingSecurity}
+                            className={`w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditingSecurity ? 'bg-gray-50 text-gray-400 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
                           />
                           <button
                             type="button"
@@ -490,7 +566,7 @@ const KabadBechoSettings = () => {
                       </div>
                     </div>
 
-                    <div className="bg-[#E8F5E9] p-6 rounded-xl border-l-4 border-[#66BB6A]">
+                    <div className="bg-[#E8F5E9] p-6 rounded-sm border-l-4 border-[#66BB6A]">
                       <h3 className="font-bold text-[#5D4037] mb-2">Password Requirements</h3>
                       <ul className="space-y-2 text-sm text-gray-700">
                         <li className="flex items-center space-x-2">
@@ -508,61 +584,19 @@ const KabadBechoSettings = () => {
                       </ul>
                     </div>
 
-                    <button
-                      onClick={handleSave}
-                      className="w-full py-4 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-bold text-lg rounded-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2"
-                    >
-                      <Save size={22} />
-                      <span>Update Password</span>
-                    </button>
+                    {isEditingSecurity && (
+                      <button
+                        onClick={handleSave}
+                        className="w-full py-4 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-bold text-lg rounded-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2"
+                      >
+                        <Save size={22} />
+                        <span>Update Password</span>
+                      </button>
+                    )}
                   </div>
                 )}
 
-                {/* Notification Settings */}
-                {activeTab === 'notifications' && (
-                  <div className="space-y-8">
-                    <div>
-                      <h2 className="text-3xl font-bold text-[#5D4037] mb-2">Notification Preferences</h2>
-                      <p className="text-gray-600">Choose how you want to receive updates</p>
-                    </div>
 
-                    <div className="space-y-4">
-                      {[
-                        { key: 'emailNotifications', label: 'Email Notifications', desc: 'Receive notifications via email' },
-                        { key: 'smsNotifications', label: 'SMS Notifications', desc: 'Receive SMS alerts for pickups' },
-                        { key: 'pushNotifications', label: 'Push Notifications', desc: 'Browser and mobile push notifications' },
-                        { key: 'pickupReminders', label: 'Pickup Reminders', desc: 'Get reminded before scheduled pickup' },
-                        { key: 'promotionalEmails', label: 'Promotional Emails', desc: 'Receive offers and promotional content' },
-                        { key: 'weeklyReport', label: 'Weekly Report', desc: 'Get weekly summary of your activities' }
-                      ].map((item) => (
-                        <div key={item.key} className="flex items-center justify-between p-6 bg-linear-to-r from-white to-[#E8F5E9] rounded-xl border border-gray-100 hover:shadow-md transition-all duration-300">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-[#5D4037] mb-1">{item.label}</h4>
-                            <p className="text-sm text-gray-600">{item.desc}</p>
-                          </div>
-                          <button
-                            onClick={() => handleNotificationToggle(item.key)}
-                            className={`relative w-14 h-7 rounded-full transition-colors duration-300 ${
-                              notifications[item.key] ? 'bg-linear-to-r from-[#66BB6A] to-[#4CAF50]' : 'bg-gray-300'
-                            }`}
-                          >
-                            <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${
-                              notifications[item.key] ? 'translate-x-8' : 'translate-x-1'
-                            }`}></div>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={handleSave}
-                      className="w-full py-4 bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white font-bold text-lg rounded-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2"
-                    >
-                      <Save size={22} />
-                      <span>Save Preferences</span>
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
           </div>

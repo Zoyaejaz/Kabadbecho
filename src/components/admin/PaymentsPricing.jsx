@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Search, Edit2, Save, X, DollarSign, Package, 
-  TrendingUp, Calendar, FileText, Download, Truck
 } from 'lucide-react';
+import API_URL from '../../config';
 
 const PaymentsPricing = () => {
   const [editingPriceId, setEditingPriceId] = useState(null);
@@ -30,7 +30,7 @@ const PaymentsPricing = () => {
   const loadPaymentsAndStats = () => {
     // Fetch stats
     const token = localStorage.getItem('token');
-    fetch('https://kabad-backend.onrender.com/api/admin/stats', {
+    fetch(`${API_URL}/api/admin/stats`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -42,7 +42,7 @@ const PaymentsPricing = () => {
       .catch(err => console.log("Failed to fetch admin stats", err));
 
     // Fetch transactions
-    fetch('https://kabad-backend.onrender.com/api/admin/pickups', {
+    fetch(`${API_URL}/api/admin/pickups`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -103,7 +103,7 @@ const PaymentsPricing = () => {
 
       {/* Revenue Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-linear-to-br from-[#66BB6A] to-[#43A047] text-white p-6 rounded-lg shadow-lg">
+        <div className="bg-linear-to-br from-[#66BB6A] to-[#43A047] text-white p-6 rounded-sm shadow-lg">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium opacity-90">Daily Revenue</h3>
             <DollarSign size={24} className="opacity-80" />
@@ -112,7 +112,7 @@ const PaymentsPricing = () => {
           <p className="text-sm opacity-80 mt-1">{stats.completedCount} completed collections</p>
         </div>
 
-        <div className="bg-linear-to-br from-[#5D4037] to-[#4E342E] text-white p-6 rounded-lg shadow-lg">
+        <div className="bg-linear-to-br from-[#5D4037] to-[#4E342E] text-white p-6 rounded-sm shadow-lg">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium opacity-90">Total Revenue (Inc. Estimated)</h3>
             <TrendingUp size={24} className="opacity-80" />
@@ -122,7 +122,7 @@ const PaymentsPricing = () => {
         </div>
 
         {/* Card 3: Scrap Inventory / Total Weight */}
-        <div className="bg-linear-to-br from-[#FB8C00] to-[#F4511E] text-white p-6 rounded-lg shadow-lg">
+        <div className="bg-linear-to-br from-[#FB8C00] to-[#F4511E] text-white p-6 rounded-sm shadow-lg">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium opacity-90">Total Scrap Collected</h3>
             <Truck size={24} className="opacity-80" />
@@ -137,7 +137,7 @@ const PaymentsPricing = () => {
       </div>
 
       {/* Scrap Price Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200 flex justify-between items-center">
           <div>
             <h2 className="text-lg font-bold text-[#5D4037]">Scrap Price Management</h2>
@@ -201,14 +201,14 @@ const PaymentsPricing = () => {
                             const newPrice = document.getElementById(`price-${item.id}`).value;
                             handleUpdatePrice(item.id, newPrice);
                           }}
-                          className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-lg transition-colors cursor-pointer"
+                          className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-sm transition-colors cursor-pointer"
                           title="Save"
                         >
                           <Save size={18} />
                         </button>
                         <button
                           onClick={() => setEditingPriceId(null)}
-                          className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                          className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-sm transition-colors cursor-pointer"
                           title="Cancel"
                         >
                           <X size={18} />
@@ -217,7 +217,7 @@ const PaymentsPricing = () => {
                     ) : (
                       <button
                         onClick={() => setEditingPriceId(item.id)}
-                        className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-lg transition-colors cursor-pointer"
+                        className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-sm transition-colors cursor-pointer"
                         title="Edit Price"
                       >
                         <Edit2 size={18} />
@@ -232,13 +232,13 @@ const PaymentsPricing = () => {
       </div>
 
       {/* Payment Records */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200 flex justify-between items-center">
           <div>
             <h2 className="text-lg font-bold text-[#5D4037]">Payment Records</h2>
             <p className="text-sm text-gray-600 mt-1">Transaction history and payment status</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#66BB6A] text-white rounded-lg hover:bg-[#4CAF50] transition-colors">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[#66BB6A] text-white rounded-sm hover:bg-[#4CAF50] transition-colors">
             <Download size={18} />
             <span>Export Report</span>
           </button>

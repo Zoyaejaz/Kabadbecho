@@ -86,7 +86,7 @@ const SchedulePickup = () => {
                 <input
                   type="text"
                   placeholder="Enter your full name"
-                  className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
+                  className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
                 />
               </div>
 
@@ -96,7 +96,7 @@ const SchedulePickup = () => {
                 <input
                   type="tel"
                   placeholder="+91 98765 43210"
-                  className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
+                  className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
                 />
               </div>
 
@@ -106,7 +106,7 @@ const SchedulePickup = () => {
                 <textarea
                   rows="3"
                   placeholder="Enter complete address with landmarks"
-                  className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all resize-none"
+                  className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all resize-none"
                 ></textarea>
               </div>
 
@@ -116,12 +116,12 @@ const SchedulePickup = () => {
                   <label className="block text-[#5D4037] font-semibold mb-2">Pickup Date</label>
                   <input
                     type="date"
-                    className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
+                    className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
                   />
                 </div>
                 <div>
                   <label className="block text-[#5D4037] font-semibold mb-2">Preferred Time</label>
-                  <select className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all">
+                  <select className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all">
                     <option>Morning (9 AM - 12 PM)</option>
                     <option>Afternoon (12 PM - 3 PM)</option>
                     <option>Evening (3 PM - 6 PM)</option>
@@ -137,13 +137,13 @@ const SchedulePickup = () => {
                     type="text"
                     value={scrapType}
                     readOnly
-                    className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none"
+                    className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none"
                   />
                 ) : (
                   <select
                     value={scrapType}
                     onChange={(e) => setScrapType(e.target.value)}
-                    className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
+                    className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
                   >
                     <option>Metal Scrap</option>
                     <option>Plastic Scrap</option>
@@ -161,14 +161,14 @@ const SchedulePickup = () => {
                 <input
                   type="number"
                   placeholder="Approximate weight in kg"
-                  className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
+                  className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all"
                 />
               </div>
 
               {/* Upload Photo - Optional */}
               <div>
                 <label className="block text-[#5D4037] font-semibold mb-2">Upload Photo <span className="text-gray-400 font-normal text-sm">(Optional)</span></label>
-                <div className="relative border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-[#F1F8E9] transition-all p-8 flex flex-col items-center justify-center cursor-pointer group">
+                <div className="relative border-2 border-dashed border-gray-300 rounded-sm bg-gray-50 hover:bg-[#F1F8E9] transition-all p-8 flex flex-col items-center justify-center cursor-pointer group">
                   <input
                     type="file"
                     accept="image/*"
@@ -188,14 +188,14 @@ const SchedulePickup = () => {
                 <textarea
                   rows="2"
                   placeholder="Any special instructions or requirements"
-                  className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all resize-none"
+                  className="w-full px-6 py-4 rounded-sm border-2 border-gray-200 focus:border-[#66BB6A] focus:outline-none transition-all resize-none"
                 ></textarea>
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-5 bg-[#66BB6A] text-white font-bold text-xl rounded-xl hover:bg-[#4CAF50] transition-all duration-300 shadow-xl flex items-center justify-center space-x-3 mt-8"
+                className="w-full py-5 bg-[#66BB6A] text-white font-bold text-xl rounded-sm hover:bg-[#4CAF50] transition-all duration-300 shadow-xl flex items-center justify-center space-x-3 mt-8"
               >
                 <Truck size={24} />
                 <span>Confirm Pickup</span>

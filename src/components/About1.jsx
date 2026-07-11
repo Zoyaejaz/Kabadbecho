@@ -156,7 +156,7 @@ const KabadBechoAboutUs = () => {
               <button
                 key={idx}
                 onClick={() => setActiveProject(idx)}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                className={`px-6 py-3 rounded-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
                   activeProject === idx
                     ? `bg-linear-to-r ${project.gradient} text-white shadow-xl`
                     : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
@@ -168,11 +168,11 @@ const KabadBechoAboutUs = () => {
           </div>
 
           {/* Active Project Display */}
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+          <div className="bg-white rounded-sm shadow-2xl overflow-hidden">
             <div className={`bg-linear-to-r ${projects[activeProject].gradient} p-8 sm:p-12 text-white`}>
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex items-center space-x-6">
-                  <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-sm">
+                  <div className="p-4 bg-white/20 rounded-sm backdrop-blur-sm">
                     {projects[activeProject].icon}
                   </div>
                   <div>
@@ -204,21 +204,21 @@ const KabadBechoAboutUs = () => {
               </p>
 
               <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-xl border-l-4 border-[#66BB6A]">
+                <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-sm border-l-4 border-[#66BB6A]">
                   <div className="flex items-center space-x-3 mb-2">
                     <Package className="text-[#66BB6A]" size={24} />
                     <span className="text-sm text-gray-600 font-medium">Total Collected</span>
                   </div>
                   <div className="text-3xl font-bold text-[#5D4037]">{projects[activeProject].stats.collected}</div>
                 </div>
-                <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-xl border-l-4 border-[#4CAF50]">
+                <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-sm border-l-4 border-[#4CAF50]">
                   <div className="flex items-center space-x-3 mb-2">
                     <Users className="text-[#4CAF50]" size={24} />
                     <span className="text-sm text-gray-600 font-medium">Beneficiaries</span>
                   </div>
                   <div className="text-3xl font-bold text-[#5D4037]">{projects[activeProject].stats.beneficiaries}</div>
                 </div>
-                <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-xl border-l-4 border-[#2E7D32]">
+                <div className="bg-linear-to-br from-[#E8F5E9] to-white p-6 rounded-sm border-l-4 border-[#2E7D32]">
                   <div className="flex items-center space-x-3 mb-2">
                     <Leaf className="text-[#2E7D32]" size={24} />
                     <span className="text-sm text-gray-600 font-medium">Trees Saved</span>
@@ -246,8 +246,8 @@ const KabadBechoAboutUs = () => {
               { value: '23,500+', label: 'Trees Saved', icon: <Leaf size={24} /> },
               { value: '100+', label: 'Partner Organizations', icon: <Building2 size={24} /> }
             ].map((stat, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <div className="inline-flex p-3 bg-[#E8F5E9] rounded-xl text-[#66BB6A] mb-3">
+              <div key={idx} className="bg-white p-6 rounded-sm shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <div className="inline-flex p-3 bg-[#E8F5E9] rounded-sm text-[#66BB6A] mb-3">
                   {stat.icon}
                 </div>
                 <div className="text-3xl font-bold text-[#66BB6A] mb-2">{stat.value}</div>
@@ -273,13 +273,13 @@ const KabadBechoAboutUs = () => {
           <div className="space-y-8">
             {recyclingSteps.map((step, idx) => (
               <div key={idx} className="group">
-                <div className={`bg-linear-to-r ${step.color} p-1 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500`}>
-                  <div className="bg-white rounded-3xl p-8 sm:p-12">
+                <div className={`bg-linear-to-r ${step.color} p-1 rounded-sm shadow-xl hover:shadow-2xl transition-all duration-500`}>
+                  <div className="bg-white rounded-sm p-8 sm:p-12">
                     <div className="grid lg:grid-cols-2 gap-8 items-center">
                       {/* Left - Icon and Title */}
                       <div className={`${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
                         <div className="flex items-center space-x-6 mb-6">
-                          <div className={`relative shrink-0 w-20 h-20 bg-linear-to-br ${step.color} rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                          <div className={`relative shrink-0 w-20 h-20 bg-linear-to-br ${step.color} rounded-sm flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform duration-300`}>
                             {step.icon}
                             <div className="absolute -top-3 -right-3 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
                               <span className="text-xl font-bold text-[#5D4037]">{step.step}</span>
@@ -296,7 +296,7 @@ const KabadBechoAboutUs = () => {
                       <div className={`${idx % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
                         <div className="grid grid-cols-2 gap-4">
                           {step.details.map((detail, detailIdx) => (
-                            <div key={detailIdx} className="flex items-center space-x-3 bg-linear-to-br from-[#E8F5E9] to-white p-4 rounded-xl hover:shadow-md transition-all duration-300">
+                            <div key={detailIdx} className="flex items-center space-x-3 bg-linear-to-br from-[#E8F5E9] to-white p-4 rounded-sm hover:shadow-md transition-all duration-300">
                               <CheckCircle className="text-[#66BB6A] shrink-0" size={20} />
                               <span className="text-gray-700 font-medium text-sm">{detail}</span>
                             </div>
@@ -317,7 +317,7 @@ const KabadBechoAboutUs = () => {
           </div>
 
           {/* Process Benefits */}
-          <div className="mt-16 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-3xl p-8 sm:p-12 text-white shadow-2xl">
+          <div className="mt-16 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-sm p-8 sm:p-12 text-white shadow-2xl">
             <div className="text-center mb-8">
               <h3 className="text-3xl font-bold mb-4">Why Our Process Matters</h3>
               <p className="text-xl text-green-50">
@@ -330,9 +330,9 @@ const KabadBechoAboutUs = () => {
                 { icon: <Shield size={28} />, title: 'Safe & Certified', desc: 'Government approved methods' },
                 { icon: <RefreshCw size={28} />, title: 'Circular Economy', desc: 'Materials back in production' }
               ].map((benefit, idx) => (
-                <div key={idx} className="bg-white/10 backdrop-blur-sm p-6 rounded-xl hover:bg-white/20 transition-all duration-300">
+                <div key={idx} className="bg-white/10 backdrop-blur-sm p-6 rounded-sm hover:bg-white/20 transition-all duration-300">
                   <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-white/20 rounded-xl">
+                    <div className="p-3 bg-white/20 rounded-sm">
                       {benefit.icon}
                     </div>
                     <div>

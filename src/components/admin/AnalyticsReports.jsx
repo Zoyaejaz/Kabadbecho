@@ -65,14 +65,14 @@ const AnalyticsReports = () => {
         <div className="flex gap-2">
           <button
             onClick={() => exportReport('csv')}
-            className="flex items-center gap-2 px-4 py-2 bg-[#66BB6A] text-white rounded-lg hover:bg-[#4CAF50] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[#66BB6A] text-white rounded-sm hover:bg-[#4CAF50] transition-colors"
           >
             <Download size={18} />
             <span>CSV</span>
           </button>
           <button
             onClick={() => exportReport('pdf')}
-            className="flex items-center gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-lg hover:bg-[#4e362e] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-sm hover:bg-[#4e362e] transition-colors"
           >
             <Download size={18} />
             <span>PDF</span>
@@ -81,14 +81,14 @@ const AnalyticsReports = () => {
       </div>
 
       {/* Date Range Filter */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-4 rounded-sm shadow-sm border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
             >
               <option value="today">Today</option>
               <option value="week">This Week</option>
@@ -100,15 +100,15 @@ const AnalyticsReports = () => {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
           />
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
           />
-          <button className="px-4 py-2 bg-[#5D4037] text-white rounded-lg hover:bg-[#4e362e] transition-colors">
+          <button className="px-4 py-2 bg-[#5D4037] text-white rounded-sm hover:bg-[#4e362e] transition-colors">
             Apply Filter
           </button>
         </div>
@@ -116,9 +116,9 @@ const AnalyticsReports = () => {
 
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-[#E8F5E9] rounded-lg">
+            <div className="p-3 bg-[#E8F5E9] rounded-sm">
               <Package className="text-[#66BB6A]" size={24} />
             </div>
             <span className={`text-sm font-medium ${dashboardStats.pickupsGrowth > 0 ? 'text-[#66BB6A]' : 'text-red-600'}`}>
@@ -130,9 +130,9 @@ const AnalyticsReports = () => {
           <p className="text-xs text-gray-500 mt-2">Completed pickups this period</p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-[#E8F5E9] rounded-lg">
+            <div className="p-3 bg-[#E8F5E9] rounded-sm">
               <Users className="text-[#66BB6A]" size={24} />
             </div>
             <span className={`text-sm font-medium ${dashboardStats.usersGrowth > 0 ? 'text-[#66BB6A]' : 'text-red-600'}`}>
@@ -144,9 +144,9 @@ const AnalyticsReports = () => {
           <p className="text-xs text-gray-500 mt-2">Users with pickups this period</p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-[#E8F5E9] rounded-lg">
+            <div className="p-3 bg-[#E8F5E9] rounded-sm">
               <DollarSign className="text-[#66BB6A]" size={24} />
             </div>
             <span className={`text-sm font-medium ${dashboardStats.revenueGrowth > 0 ? 'text-[#66BB6A]' : 'text-red-600'}`}>
@@ -158,9 +158,9 @@ const AnalyticsReports = () => {
           <p className="text-xs text-gray-500 mt-2">Revenue generated this period</p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-[#E8F5E9] rounded-lg">
+            <div className="p-3 bg-[#E8F5E9] rounded-sm">
               <TrendingUp className="text-[#66BB6A]" size={24} />
             </div>
             <span className={`text-sm font-medium ${dashboardStats.valueGrowth > 0 ? 'text-[#66BB6A]' : 'text-red-600'}`}>
@@ -176,7 +176,7 @@ const AnalyticsReports = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pickups Per Day Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <BarChart3 className="text-[#66BB6A]" size={24} />
@@ -216,7 +216,7 @@ const AnalyticsReports = () => {
         </div>
 
         {/* Scrap Category Distribution */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <PieChart className="text-[#66BB6A]" size={24} />
@@ -259,7 +259,7 @@ const AnalyticsReports = () => {
       </div>
 
       {/* Top Users Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <Users className="text-[#66BB6A]" size={24} />

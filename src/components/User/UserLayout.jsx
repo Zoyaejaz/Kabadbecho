@@ -28,7 +28,7 @@ const UserLayout = () => {
     <div className="min-h-screen bg-[#F1F8E9]">
       {/* HEADER */}
       <header className="fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-40 flex items-center px-4 lg:px-6">
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-gray-100 rounded-lg">
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-gray-100 rounded-sm">
           {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
@@ -46,7 +46,7 @@ const UserLayout = () => {
           </button>
           <button
             onClick={handleLogout}
-            className="flex gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-lg hover:bg-[#4E362E]"
+            className="flex gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-sm hover:bg-[#4E362E]"
           >
             <LogOut size={18} /> Logout
           </button>
@@ -69,7 +69,7 @@ const UserLayout = () => {
                <Link
                               key={item.path}
                               to={item.path}
-                              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                              className={`flex items-center gap-3 px-4 py-3 rounded-sm transition-all duration-200 ${
                                 active
                                   ? 'bg-[#E8F5E9] text-[#66BB6A] font-semibold shadow-sm'
                                   : 'text-[#5D4037] hover:bg-[#FAFAFA]'

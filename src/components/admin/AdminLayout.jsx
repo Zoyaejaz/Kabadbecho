@@ -55,7 +55,7 @@ const AdminLayout = () => {
       <header className="fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-40 flex items-center px-4 lg:px-6">
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="p-2 rounded-sm hover:bg-gray-100 transition-colors"
         >
           {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -72,7 +72,7 @@ const AdminLayout = () => {
           </div>
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-lg hover:bg-[#4e362e] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-sm hover:bg-[#4e362e] transition-colors"
           >
             <LogOut size={18} />
             <span className="hidden sm:inline">Logout</span>
@@ -95,7 +95,7 @@ const AdminLayout = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-sm transition-all duration-200 ${
                   active
                     ? 'bg-[#E8F5E9] text-[#66BB6A] font-semibold shadow-sm'
                     : 'text-[#5D4037] hover:bg-[#FAFAFA]'

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import API_URL from '../../config';
 import { 
   Search, Filter, Eye, Ban, CheckCircle, User, 
   Phone, MapPin, Package, AlertTriangle, History 
@@ -10,109 +11,72 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showUserModal, setShowUserModal] = useState(false);
 
-  const [users, setUsers] = useState([
-    {
-      id: 'USR001',
-      name: 'Rajesh Kumar',
-      phone: '+91 98765 43210',
-      email: 'rajesh@email.com',
-      address: '123, MG Road, Bangalore',
-      totalPickups: 12,
-      activePickups: 2,
-      status: 'active',
-      joinedDate: '2024-08-15',
-      lastActive: '2025-01-02',
-      frequentCancellations: false,
-      pickupHistory: [
-        { id: 'REQ001', date: '2025-01-02', scrapType: 'Plastic', quantity: '15 kg', status: 'pending' },
-        { id: 'REQ015', date: '2024-12-20', scrapType: 'Paper', quantity: '20 kg', status: 'completed' },
-        { id: 'REQ008', date: '2024-11-15', scrapType: 'Metal', quantity: '10 kg', status: 'completed' },
-      ]
-    },
-    {
-      id: 'USR002',
-      name: 'Priya Sharma',
-      phone: '+91 87654 32109',
-      email: 'priya@email.com',
-      address: '456, Koramangala, Bangalore',
-      totalPickups: 8,
-      activePickups: 1,
-      status: 'active',
-      joinedDate: '2024-09-20',
-      lastActive: '2025-01-01',
-      frequentCancellations: false,
-      pickupHistory: [
-        { id: 'REQ002', date: '2025-01-01', scrapType: 'Metal', quantity: '25 kg', status: 'accepted' },
-        { id: 'REQ012', date: '2024-12-15', scrapType: 'Electronics', quantity: '5 kg', status: 'completed' },
-      ]
-    },
-    {
-      id: 'USR003',
-      name: 'Amit Patel',
-      phone: '+91 76543 21098',
-      email: 'amit@email.com',
-      address: '789, Whitefield, Bangalore',
-      totalPickups: 15,
-      activePickups: 0,
-      status: 'active',
-      joinedDate: '2024-06-10',
-      lastActive: '2024-12-28',
-      frequentCancellations: false,
-      pickupHistory: [
-        { id: 'REQ003', date: '2024-12-28', scrapType: 'Electronics', quantity: '8 kg', status: 'completed' },
-        { id: 'REQ010', date: '2024-12-10', scrapType: 'Plastic', quantity: '18 kg', status: 'completed' },
-      ]
-    },
-    {
-      id: 'USR004',
-      name: 'Sneha Reddy',
-      phone: '+91 65432 10987',
-      email: 'sneha@email.com',
-      address: '321, Indiranagar, Bangalore',
-      totalPickups: 3,
-      activePickups: 0,
-      status: 'blocked',
-      joinedDate: '2024-11-01',
-      lastActive: '2024-12-30',
-      frequentCancellations: true,
-      pickupHistory: [
-        { id: 'REQ004', date: '2024-12-30', scrapType: 'Paper', quantity: '30 kg', status: 'denied' },
-        { id: 'REQ009', date: '2024-12-05', scrapType: 'Plastic', quantity: '12 kg', status: 'cancelled' },
-      ]
-    },
-    {
-      id: 'USR005',
-      name: 'Vikram Singh',
-      phone: '+91 54321 09876',
-      email: 'vikram@email.com',
-      address: '654, HSR Layout, Bangalore',
-      totalPickups: 20,
-      activePickups: 1,
-      status: 'active',
-      joinedDate: '2024-05-05',
-      lastActive: '2025-01-03',
-      frequentCancellations: false,
-      pickupHistory: [
-        { id: 'REQ005', date: '2025-01-03', scrapType: 'Metal', quantity: '40 kg', status: 'pending' },
-        { id: 'REQ016', date: '2024-12-25', scrapType: 'Electronics', quantity: '12 kg', status: 'completed' },
-      ]
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/api/admin/users`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const formatted = data.map(u => ({
+            id: u.id,
+            name: u.name || 'Unknown',
+            phone: u.phone || '-',
+            email: u.email,
+            address: u.address || '-',
+            totalPickups: u.totalJobsCompleted || 0,
+            activePickups: 0,
+            status: u.isBlocked ? 'blocked' : 'active',
+            joinedDate: new Date().toISOString(),
+            lastActive: new Date().toISOString(),
+            frequentCancellations: false,
+            pickupHistory: []
+          }));
+          setUsers(formatted);
+        }
+      } catch(err) {
+        console.error("Failed to load users", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          user.phone.includes(searchTerm) ||
-                          user.id.toLowerCase().includes(searchTerm.toLowerCase());
+                          (user.phone && user.phone.includes(searchTerm)) ||
+                          String(user.id).toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const handleBlockUnblock = (userId) => {
+  const handleBlockUnblock = async (userId) => {
+    // Optimistic UI update
     setUsers(users.map(user =>
       user.id === userId
         ? { ...user, status: user.status === 'active' ? 'blocked' : 'active' }
         : user
     ));
+
+    try {
+      const token = localStorage.getItem('token');
+      await fetch(`${API_URL}/api/admin/users/${userId}/toggle-block`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    } catch(err) {
+      console.error("Failed to block/unblock user", err);
+    }
   };
 
   const viewUserDetails = (user) => {
@@ -129,17 +93,17 @@ const UserManagement = () => {
           <p className="text-gray-600 mt-1">Manage platform users and their activities</p>
         </div>
         <div className="flex gap-2">
-          <div className="bg-[#EFEBE9] px-4 py-2 rounded-lg border border-[#D7CCC8]">
+          <div className="bg-[#EFEBE9] px-4 py-2 rounded-sm border border-[#D7CCC8]">
             <p className="text-xs text-[#5D4037]">Total Users</p>
             <p className="text-2xl font-bold text-[#4E342E]">{users.length}</p>
           </div>
-          <div className="bg-[#E8F5E9] px-4 py-2 rounded-lg border border-[#C8E6C9]">
+          <div className="bg-[#E8F5E9] px-4 py-2 rounded-sm border border-[#C8E6C9]">
             <p className="text-xs text-[#2E7D32]">Active</p>
             <p className="text-2xl font-bold text-[#1B5E20]">
               {users.filter(u => u.status === 'active').length}
             </p>
           </div>
-          <div className="bg-red-50 px-4 py-2 rounded-lg border border-red-200">
+          <div className="bg-red-50 px-4 py-2 rounded-sm border border-red-200">
             <p className="text-xs text-red-600">Blocked</p>
             <p className="text-2xl font-bold text-red-700">
               {users.filter(u => u.status === 'blocked').length}
@@ -149,7 +113,7 @@ const UserManagement = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-4 rounded-sm shadow-sm border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="relative md:col-span-2">
@@ -159,7 +123,7 @@ const UserManagement = () => {
               placeholder="Search by name, phone, or ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent"
             />
           </div>
 
@@ -169,7 +133,7 @@ const UserManagement = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#66BB6A] focus:border-transparent appearance-none"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -180,7 +144,7 @@ const UserManagement = () => {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -265,14 +229,14 @@ const UserManagement = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => viewUserDetails(user)}
-                        className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-lg transition-colors"
+                        className="text-[#66BB6A] hover:text-[#4CAF50] p-2 hover:bg-[#E8F5E9] rounded-sm transition-colors"
                         title="View Details"
                       >
                         <Eye size={18} />
                       </button>
                       <button
                         onClick={() => handleBlockUnblock(user.id)}
-                        className={`p-2 rounded-lg transition-colors ${
+                        className={`p-2 rounded-sm transition-colors ${
                           user.status === 'active'
                             ? 'text-red-600 hover:text-red-800 hover:bg-red-50'
                             : 'text-[#66BB6A] hover:text-[#4CAF50] hover:bg-[#E8F5E9]'
@@ -300,12 +264,12 @@ const UserManagement = () => {
       {/* User Details Modal */}
       {showUserModal && selectedUser && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-sm max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
               <h3 className="text-xl font-bold text-[#5D4037]">User Profile</h3>
               <button
                 onClick={() => setShowUserModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-sm transition-colors"
               >
                 <Eye size={24} className="rotate-180" />
               </button>
@@ -370,7 +334,7 @@ const UserManagement = () => {
                       <p className="font-medium text-lg">{selectedUser.activePickups}</p>
                     </div>
                     {selectedUser.frequentCancellations && (
-                      <div className="bg-orange-50 p-3 rounded-lg border border-orange-200">
+                      <div className="bg-orange-50 p-3 rounded-sm border border-orange-200">
                         <div className="flex items-center gap-2 text-orange-700">
                           <AlertTriangle size={16} />
                           <span className="text-sm font-medium">Frequent Cancellations Flagged</span>
@@ -387,7 +351,7 @@ const UserManagement = () => {
                   <History size={20} />
                   Pickup History
                 </h4>
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <div className="border border-gray-200 rounded-sm overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-gray-50">
                       <tr>
@@ -427,7 +391,7 @@ const UserManagement = () => {
               <div className="flex gap-3 pt-4 border-t border-gray-200">
                 <button
                   onClick={() => handleBlockUnblock(selectedUser.id)}
-                  className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`flex-1 px-4 py-2 rounded-sm font-medium transition-colors ${
                     selectedUser.status === 'active'
                       ? 'bg-red-600 text-white hover:bg-red-700'
                       : 'bg-[#66BB6A] text-white hover:bg-[#4CAF50]'
@@ -437,7 +401,7 @@ const UserManagement = () => {
                 </button>
                 <button
                   onClick={() => setShowUserModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
                 >
                   Close
                 </button>

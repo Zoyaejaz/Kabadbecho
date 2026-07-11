@@ -1,8 +1,7 @@
 package com.kabadbecho.backend.service;
 
-import com.kabadbecho.backend.model.PickupRequest;
-import com.kabadbecho.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -13,38 +12,40 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendCollectorAssignedEmail(PickupRequest request, User collector) {
-        if (request.getEmail() == null || request.getEmail().isBlank()) {
-            return;
-        }
+    @Value("${admin.email:admin@kabadbecho.com}")
+    private String adminEmail;
 
-        String collectorName = collector != null ? collector.getName() : "Assigned Collector";
-        String collectorPhone = collector != null ? collector.getPhone() : "Not provided";
-
-        String subject = "KabadBecho - Your Pickup Request has been Accepted!";
-        String text = "Dear " + request.getName() + ",\n\n" +
-                "Good news! Your scrap pickup request (ID: KB" + request.getId() + ") has been accepted.\n\n" +
-                "Scrap Collector assigned: " + collectorName + "\n" +
-                "Contact Number: " + collectorPhone + "\n\n" +
-                "They will arrive at your address (" + request.getAddress() + ") to collect your scrap.\n" +
-                "Estimated payout: Rs. " + request.getEstimatedAmount() + "\n\n" +
-                "Thank you for contributing to a greener planet with KabadBecho!\n\n" +
-                "Best Regards,\nThe Kabad Becho Team";
-
-        // In an actual production scenario, this sends the email via the configured SMTP.
-        // For development if SMTP fails, catch it so we don't break the transaction just because mail fails.
+    public void sendContactNotification(String name, String userEmail, String message) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("notifications@kabadbecho.com");
-            message.setTo(request.getEmail());
-            message.setSubject(subject);
-            message.setText(text);
-            mailSender.send(message);
-            System.out.println("[EMAIL SERVICE] Mock/Real mail successfully relayed to " + request.getEmail());
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(adminEmail);
+            mailMessage.setSubject("New Contact Us Submission from " + name);
+            mailMessage.setText("You have received a new contact submission:\n\n" +
+                    "Name: " + name + "\n" +
+                    "Email: " + userEmail + "\n\n" +
+                    "Message:\n" + message);
+            
+            mailSender.send(mailMessage);
+            System.out.println("Contact notification email sent to admin successfully.");
         } catch (Exception e) {
-            System.err.println("[EMAIL SERVICE] Mail sending failed due to configuration: " + e.getMessage());
-            // Logging the text so it can be seen in console anyway:
-            System.out.println(text);
+            System.err.println("Failed to send contact notification email. " + e.getMessage());
+            // We only print warning in development, especially with mock SMTP. Exception won't break the form submission.
+        }
+    }
+
+    public void sendCollectorAssignedEmail(com.kabadbecho.backend.model.PickupRequest request, com.kabadbecho.backend.model.User collector) {
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+                mailMessage.setTo(request.getEmail());
+                mailMessage.setSubject("Collector Assigned for your Pickup (ID: " + request.getId() + ")");
+                mailMessage.setText("Good news!\n\nA collector (" + collector.getName() + " - " + collector.getPhone() + 
+                       ") has been assigned to your pickup request.\n\nThank you for using KabadBecho.");
+                mailSender.send(mailMessage);
+                System.out.println("Collector assigned email sent successfully.");
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to send collector assigned email. " + e.getMessage());
         }
     }
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Mail, Lock, User, Phone, MapPin, Eye, EyeOff, Loader2, Info, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../config';
 
 const DEMO_CREDENTIALS = {
   email: 'demo@example.com',
@@ -19,7 +20,7 @@ const InputField = ({ icon: Icon, type, placeholder, label, value, onChange, err
         type={type}
         value={value}
         onChange={onChange}
-        className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-[#66BB6A] focus:border-[#66BB6A] text-sm transition-colors ${error ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
+        className={`block w-full pl-10 pr-3 py-2 border rounded-sm focus:ring-[#66BB6A] focus:border-[#66BB6A] text-sm transition-colors ${error ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
         placeholder={placeholder}
       />
       {isPassword && (
@@ -66,7 +67,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
 
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      fetch('https://kabad-backend.onrender.com/api/auth/login', {
+      fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +125,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
 
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      fetch('https://kabad-backend.onrender.com/api/auth/signup', {
+      fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +145,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
           setSignupSuccessMessage('Registration successful! Logging you in...');
           
           // Auto-login after successful registration
-          fetch('https://kabad-backend.onrender.com/api/auth/login', {
+          fetch(`${API_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -212,7 +213,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
       {/* Modal Container */}
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl transition-all animate-fade-in-up">
+      <div className="relative w-full max-w-md overflow-hidden rounded-sm bg-white shadow-2xl transition-all animate-fade-in-up">
 
         {/* Header Gradient */}
         <div className="bg-linear-to-br from-[#2E7D32] to-[#66BB6A] p-6 text-center text-white relative">
@@ -236,7 +237,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
 
           {/* Demo Creds Hint (Only for login) */}
           {view === 'login' && (
-            <div className="mb-6 p-3 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-3">
+            <div className="mb-6 p-3 bg-blue-50 border border-blue-100 rounded-sm flex items-start gap-3">
               <Info className="text-blue-500 shrink-0 mt-0.5" size={18} />
               <div className="text-xs text-blue-800 w-full">
                 <p className="font-semibold mb-1">Admin Access:</p>
@@ -285,7 +286,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 bg-[#66BB6A] hover:bg-[#43A047] text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-green-200 disabled:opacity-70 flex items-center justify-center gap-2"
+                className="w-full py-3 bg-[#66BB6A] hover:bg-[#43A047] text-white font-bold rounded-sm transition-all shadow-lg hover:shadow-green-200 disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Login'}
               </button>
@@ -295,7 +296,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
           {view === 'signup' && (
             <form onSubmit={handleSignup} className="space-y-1">
               {signupSuccessMessage && (
-                <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 text-sm font-semibold rounded-xl text-center animate-pulse">
+                <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 text-sm font-semibold rounded-sm text-center animate-pulse">
                   {signupSuccessMessage}
                 </div>
               )}
@@ -311,7 +312,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
                 <div className="grid grid-cols-2 gap-3">
                   <div
                     onClick={() => setRole('USER')}
-                    className={`flex flex-col items-center justify-center p-3 border-2 rounded-xl cursor-pointer transition-all ${
+                    className={`flex flex-col items-center justify-center p-3 border-2 rounded-sm cursor-pointer transition-all ${
                       role === 'USER'
                         ? 'border-[#66BB6A] bg-[#E8F5E9] text-[#2E7D32]'
                         : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
@@ -324,7 +325,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
 
                   <div
                     onClick={() => setRole('SCRAP_COLLECTOR')}
-                    className={`flex flex-col items-center justify-center p-3 border-2 rounded-xl cursor-pointer transition-all ${
+                    className={`flex flex-col items-center justify-center p-3 border-2 rounded-sm cursor-pointer transition-all ${
                       role === 'SCRAP_COLLECTOR'
                         ? 'border-[#66BB6A] bg-[#E8F5E9] text-[#2E7D32]'
                         : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
@@ -340,7 +341,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 bg-[#66BB6A] hover:bg-[#43A047] text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-green-200 disabled:opacity-70 flex items-center justify-center gap-2 mt-4"
+                className="w-full py-3 bg-[#66BB6A] hover:bg-[#43A047] text-white font-bold rounded-sm transition-all shadow-lg hover:shadow-green-200 disabled:opacity-70 flex items-center justify-center gap-2 mt-4"
               >
                 {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Sign Up'}
               </button>
@@ -350,7 +351,7 @@ const AuthModal = ({ isOpen, onClose, redirectPath }) => {
           {view === 'forgot' && (
             <form onSubmit={(e) => e.preventDefault()}>
               <InputField icon={Mail} type="email" label="Email Address" placeholder="registered-email@example.com" />
-              <button className="w-full py-3 bg-[#66BB6A] hover:bg-[#43A047] text-white font-bold rounded-xl transition-all shadow-lg mt-4">
+              <button className="w-full py-3 bg-[#66BB6A] hover:bg-[#43A047] text-white font-bold rounded-sm transition-all shadow-lg mt-4">
                 Send Reset Link
               </button>
             </form>

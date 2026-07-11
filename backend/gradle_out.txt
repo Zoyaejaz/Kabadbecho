@@ -1,0 +1,35 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :compileJava
+C:\Users\Lenovo\Downloads\Kabad-becho-proj-main\Kabad-becho-proj-main\backend\src\main\java\com\kabadbecho\backend\service\EmailService.java:39: error: cannot find symbol
+            if (request.getUser() != null && request.getUser().getEmail() != null) {
+                       ^
+  symbol:   method getUser()
+  location: variable request of type PickupRequest
+C:\Users\Lenovo\Downloads\Kabad-becho-proj-main\Kabad-becho-proj-main\backend\src\main\java\com\kabadbecho\backend\service\EmailService.java:39: error: cannot find symbol
+            if (request.getUser() != null && request.getUser().getEmail() != null) {
+                                                    ^
+  symbol:   method getUser()
+  location: variable request of type PickupRequest
+C:\Users\Lenovo\Downloads\Kabad-becho-proj-main\Kabad-becho-proj-main\backend\src\main\java\com\kabadbecho\backend\service\EmailService.java:40: error: cannot find symbol
+                mailMessage.setTo(request.getUser().getEmail());
+                                         ^
+  symbol:   method getUser()
+  location: variable request of type PickupRequest
+3 errors
+
+> Task :compileJava FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+> Run with --info option to get more log output.
+> Run with --scan to get full insights.
+
+BUILD FAILED in 15s
+1 actionable task: 1 executed

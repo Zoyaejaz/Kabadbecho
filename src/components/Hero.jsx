@@ -48,10 +48,10 @@ const Hero = () => {
               ].map((f, i) => (
                 <div
                   key={i}
-                  className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-50"
+                  className="bg-white p-4 rounded-sm shadow-lg hover:shadow-xl transition-all border border-gray-50"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="p-2.5 bg-[#E8F5E9] rounded-xl text-[#66BB6A]">
+                    <div className="p-2.5 bg-[#E8F5E9] rounded-sm text-[#66BB6A]">
                       {React.cloneElement(f.icon, { size: 20 })}
                     </div>
                     <div>
