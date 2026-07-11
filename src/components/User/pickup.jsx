@@ -218,7 +218,7 @@ const KabadBechoTrackPickup = () => {
       </section>
 
       {/* Search and Filter Section */}
-      <section className="py-8 bg-white shadow-md sticky top-0 z-40">
+      <section className="py-4 md:py-6 bg-white shadow-md sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
@@ -236,12 +236,12 @@ const KabadBechoTrackPickup = () => {
             </div>
 
             {/* Filter */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 w-full scrollbar-hide snap-x">
               {['all', 'scheduled', 'in-progress', 'completed'].map((status) => (
                 <button
                   key={status}
                   onClick={() => setFilterStatus(status)}
-                  className={`px-6 py-3 rounded-sm font-semibold transition-all duration-300 capitalize ${
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-sm font-semibold transition-all duration-300 capitalize snap-start whitespace-nowrap text-sm sm:text-base ${
                     filterStatus === status
                       ? 'bg-linear-to-r from-[#66BB6A] to-[#4CAF50] text-white shadow-lg'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -276,8 +276,8 @@ const KabadBechoTrackPickup = () => {
                     className="bg-white rounded-sm shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-100 hover:border-[#66BB6A]"
                   >
                     {/* Header */}
-                    <div className={`bg-linear-to-r ${getStatusColor(pickup.status)} p-6 text-white`}>
-                      <div className="flex items-center justify-between mb-4">
+                    <div className={`bg-linear-to-r ${getStatusColor(pickup.status)} p-4 sm:p-6 text-white`}>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
                         <div className="flex items-center space-x-3">
                           <div className="text-4xl">{pickup.emoji}</div>
                           <div>
@@ -285,12 +285,12 @@ const KabadBechoTrackPickup = () => {
                             <div className="text-xl font-bold">{pickup.id}</div>
                           </div>
                         </div>
-                        <div className={`${statusBadge.bg} ${statusBadge.text_color} px-4 py-2 rounded-full flex items-center space-x-2 font-semibold`}>
+                        <div className={`self-start sm:self-auto ${statusBadge.bg} ${statusBadge.text_color} px-3 sm:px-4 py-1.5 sm:py-2 rounded-full flex items-center space-x-1 sm:space-x-2 font-semibold`}>
                           {statusBadge.icon}
-                          <span className="text-sm">{statusBadge.text}</span>
+                          <span className="text-xs sm:text-sm">{statusBadge.text}</span>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-4 text-sm">
+                      <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
                         <div className="flex items-center space-x-2">
                           <Calendar size={16} />
                           <span>{pickup.date}</span>
@@ -327,8 +327,8 @@ const KabadBechoTrackPickup = () => {
 
                       {/* Driver Info */}
                       {pickup.status !== 'scheduled' && (
-                        <div className="flex items-center space-x-3 p-4 bg-linear-to-r from-[#E8F5E9] to-white rounded-sm border-l-4 border-[#66BB6A]">
-                          <div className="w-12 h-12 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-linear-to-r from-[#E8F5E9] to-white rounded-sm border-l-4 border-[#66BB6A]">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg shrink-0">
                             {(pickup.driverName || 'S').charAt(0)}
                           </div>
                           <div className="flex-1">
@@ -342,12 +342,12 @@ const KabadBechoTrackPickup = () => {
                       )}
 
                       {/* Amount */}
-                      <div className="flex items-center justify-between p-4 bg-linear-to-r from-[#66BB6A]/10 to-[#4CAF50]/10 rounded-sm">
+                      <div className="flex items-center justify-between p-4 bg-linear-to-r from-[#66BB6A]/10 to-[#4CAF50]/10 rounded-sm mt-4">
                         <div className="flex items-center space-x-2">
-                          <DollarSign className="text-[#66BB6A]" size={20} />
-                          <span className="text-gray-700 font-medium">Total Amount</span>
+                          <DollarSign className="text-[#66BB6A]" size={18} sm:size={20} />
+                          <span className="text-gray-700 font-medium text-sm sm:text-base">Total Amount</span>
                         </div>
-                        <div className="text-2xl font-bold text-[#66BB6A]">{pickup.amount}</div>
+                        <div className="text-xl sm:text-2xl font-bold text-[#66BB6A]">{pickup.amount}</div>
                       </div>
 
                       {/* Rating (for completed) */}
@@ -392,28 +392,28 @@ const KabadBechoTrackPickup = () => {
 
       {/* Detail Modal */}
       {selectedPickup && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-sm shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 animate-fadeIn">
+          <div className="bg-white rounded-sm shadow-2xl max-w-3xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className={`bg-linear-to-r ${getStatusColor(selectedPickup.status)} p-8 text-white relative`}>
+            <div className={`bg-linear-to-r ${getStatusColor(selectedPickup.status)} p-4 sm:p-8 text-white relative`}>
               <button
                 onClick={() => setSelectedPickup(null)}
                 className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors duration-300"
               >
                 <X size={20} />
               </button>
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="text-6xl">{selectedPickup.emoji}</div>
+              <div className="flex items-center space-x-3 sm:space-x-4 mb-2 sm:mb-4">
+                <div className="text-4xl sm:text-6xl">{selectedPickup.emoji}</div>
                 <div>
-                  <div className="text-sm opacity-90">Booking Details</div>
-                  <div className="text-3xl font-bold">{selectedPickup.id}</div>
-                  <div className="text-sm opacity-90 mt-1">{selectedPickup.scrapType}</div>
+                  <div className="text-xs sm:text-sm opacity-90">Booking Details</div>
+                  <div className="text-xl sm:text-3xl font-bold">{selectedPickup.id}</div>
+                  <div className="text-xs sm:text-sm opacity-90 mt-1">{selectedPickup.scrapType}</div>
                 </div>
               </div>
             </div>
 
             {/* Modal Body */}
-            <div className="p-8 space-y-6">
+            <div className="p-4 sm:p-8 space-y-6">
               {/* Pickup Info */}
               <div>
                 <h3 className="text-xl font-bold text-[#5D4037] mb-4">Pickup Information</h3>

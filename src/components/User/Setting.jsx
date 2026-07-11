@@ -27,6 +27,7 @@ const KabadBechoSettings = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const [profileData, setProfileData] = useState({
     name: 'Rajesh Kumar',
@@ -104,7 +105,21 @@ const KabadBechoSettings = () => {
   };
 
   const handleProfileChange = (e) => {
-    setProfileData({ ...profileData, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
+    
+    // Field specific validations
+    if (name === 'name' || name === 'city' || name === 'state') {
+      value = value.replace(/[^a-zA-Z\s]/g, '');
+    } else if (name === 'phone' || name === 'alternatePhone') {
+      value = value.replace(/\D/g, ''); 
+      if (value.length > 10) value = value.slice(0, 10);
+    } else if (name === 'pincode') {
+      value = value.replace(/\D/g, '');
+      if (value.length > 6) value = value.slice(0, 6);
+    }
+
+    setProfileData({ ...profileData, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   };
 
   const handlePasswordChange = (e) => {
@@ -117,6 +132,27 @@ const KabadBechoSettings = () => {
 
   const handleSave = () => {
     if (activeTab === 'profile') {
+      const newErrors = {};
+      
+      if (profileData.phone && profileData.phone.length > 0 && profileData.phone.length < 10) {
+        newErrors.phone = 'Phone number should contain exactly 10 digits.';
+      }
+      if (profileData.alternatePhone && profileData.alternatePhone.length > 0 && profileData.alternatePhone.length < 10) {
+        newErrors.alternatePhone = 'Phone number should contain exactly 10 digits.';
+      }
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        const firstErrorName = Object.keys(newErrors)[0];
+        const errorInput = document.querySelector(`input[name="${firstErrorName}"]`);
+        if (errorInput) {
+          errorInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          errorInput.focus();
+        }
+        return;
+      }
+      setErrors({});
+
       const email = localStorage.getItem('email');
       const token = localStorage.getItem('token');
       
@@ -267,7 +303,7 @@ const KabadBechoSettings = () => {
 
             {/* Content Area */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-sm shadow-lg p-8">
+              <div className="bg-white rounded-sm shadow-lg p-4 sm:p-8">
                 {/* Profile Settings */}
                 {activeTab === 'profile' && (
                   <div className="space-y-8">
@@ -286,7 +322,7 @@ const KabadBechoSettings = () => {
                     </div>
 
                     {/* Profile Picture */}
-                    <div className="flex items-center space-x-6">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left space-y-4 sm:space-y-0 sm:space-x-6">
                       <div className="relative">
                         <div className="w-24 h-24 bg-linear-to-br from-[#66BB6A] to-[#4CAF50] rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg overflow-hidden border-2 border-white">
                           {profileData.profilePicUrl ? (
@@ -377,15 +413,24 @@ const KabadBechoSettings = () => {
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <Phone className="text-gray-400" size={20} />
                           </div>
+                          <div className="absolute inset-y-0 left-12 flex items-center pointer-events-none">
+                            <span className="text-gray-500 font-medium">+91</span>
+                          </div>
                           <input
                             type="tel"
                             name="phone"
                             value={profileData.phone}
+                            maxLength={10}
                             onChange={handleProfileChange}
                             disabled={!isEditing}
-                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
+                            className={`w-full pl-20 pr-4 py-3 border-2 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 border-gray-200 text-gray-600 opacity-80 cursor-not-allowed' : errors.phone ? 'border-red-500 bg-red-50 focus:border-red-500' : 'border-gray-200 focus:border-[#66BB6A] bg-white'}`}
                           />
                         </div>
+                        {errors.phone && (
+                          <div className="text-red-500 text-xs font-semibold mt-1 animate-pulse">
+                            {errors.phone}
+                          </div>
+                        )}
                       </div>
 
                       <div>
@@ -396,15 +441,24 @@ const KabadBechoSettings = () => {
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <Phone className="text-gray-400" size={20} />
                           </div>
+                          <div className="absolute inset-y-0 left-12 flex items-center pointer-events-none">
+                            <span className="text-gray-500 font-medium">+91</span>
+                          </div>
                           <input
                             type="tel"
                             name="alternatePhone"
                             value={profileData.alternatePhone}
+                            maxLength={10}
                             onChange={handleProfileChange}
                             disabled={!isEditing}
-                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 text-gray-600 opacity-80 cursor-not-allowed' : 'focus:border-[#66BB6A] bg-white'}`}
+                            className={`w-full pl-20 pr-4 py-3 border-2 rounded-sm focus:outline-none transition-all duration-300 ${!isEditing ? 'bg-gray-50 border-gray-200 text-gray-600 opacity-80 cursor-not-allowed' : errors.alternatePhone ? 'border-red-500 bg-red-50 focus:border-red-500' : 'border-gray-200 focus:border-[#66BB6A] bg-white'}`}
                           />
                         </div>
+                        {errors.alternatePhone && (
+                          <div className="text-red-500 text-xs font-semibold mt-1 animate-pulse">
+                            {errors.alternatePhone}
+                          </div>
+                        )}
                       </div>
 
                       <div className="md:col-span-2">

@@ -158,12 +158,12 @@ const Dashboard = () => {
 
         <div className="relative z-10 grid lg:grid-cols-2 gap-8 items-center">
           <div>
-            <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold border border-white/10 flex items-center gap-1 mb-4">
+            <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold border border-white/10 inline-flex items-center gap-1 mb-4">
               <Award size={12} /> Gold Member
             </span>
 
-            <h1 className="text-3xl lg:text-5xl font-extrabold mb-4">
-              Hello, <span className="text-green-100">Green Hero!</span> 🌱
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4">
+              Hello, <span className="text-green-100 block sm:inline">Green Hero!</span> 🌱
             </h1>
 
             <p className="text-green-50 text-lg max-w-lg mb-8">
@@ -194,21 +194,21 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/10 p-6 rounded-sm border border-white/10">
-              <Wallet size={20} className="mb-3" />
-              <p className="text-green-200 text-sm">Total Earnings</p>
-              <h3 className="text-3xl font-bold">₹ {stats.totalEarnings.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</h3>
-              <p className="text-xs mt-2 flex items-center gap-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 lg:mt-0">
+            <div className="bg-white/10 p-4 sm:p-6 rounded-sm border border-white/10">
+              <Wallet size={20} className="mb-2 sm:mb-3" />
+              <p className="text-green-200 text-xs sm:text-sm">Total Earnings</p>
+              <h3 className="text-2xl sm:text-3xl font-bold mt-1">₹ {stats.totalEarnings.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</h3>
+              <p className="text-[10px] sm:text-xs mt-2 flex items-center gap-1">
                 <TrendingUp size={12} /> Live updates
               </p>
             </div>
 
-            <div className="bg-white/10 p-6 rounded-sm border border-white/10">
-              <Leaf size={20} className="mb-3" />
-              <p className="text-green-200 text-sm">Waste Recycled</p>
-              <h3 className="text-3xl font-bold">{stats.totalWeight.toFixed(1)} kg</h3>
-              <p className="text-xs mt-2">Saved {(stats.totalWeight * 0.048).toFixed(1)} trees</p>
+            <div className="bg-white/10 p-4 sm:p-6 rounded-sm border border-white/10">
+              <Leaf size={20} className="mb-2 sm:mb-3" />
+              <p className="text-green-200 text-xs sm:text-sm">Waste Recycled</p>
+              <h3 className="text-2xl sm:text-3xl font-bold mt-1">{stats.totalWeight.toFixed(1)} kg</h3>
+              <p className="text-[10px] sm:text-xs mt-2">Saved {(stats.totalWeight * 0.048).toFixed(1)} trees</p>
             </div>
           </div>
         </div>
@@ -216,12 +216,12 @@ const Dashboard = () => {
 
       {/* PICKUPS TABLE */}
       <div className="bg-white rounded-sm shadow-lg border overflow-hidden mb-8">
-        <div className="p-8 border-b flex justify-between items-center bg-white">
-          <h3 className="text-xl font-bold flex items-center gap-2 text-[#1B5E20]">
-            <History className="text-[#66BB6A]" /> Recent Pickups & Receipts
+        <div className="p-4 sm:p-6 border-b flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-white">
+          <h3 className="text-lg sm:text-xl font-bold flex items-center gap-2 text-[#1B5E20]">
+            <History className="text-[#66BB6A]" size={20} /> <span className="truncate">Recent Pickups</span>
           </h3>
           <select 
-            className="border-2 border-gray-200 rounded-sm px-4 py-2 focus:outline-none focus:border-[#66BB6A] text-sm font-semibold text-gray-700"
+            className="w-full sm:w-auto border-2 border-gray-200 rounded-sm px-3 py-2 sm:px-4 focus:outline-none focus:border-[#66BB6A] text-sm font-semibold text-gray-700"
             value={filterStatus}
             onChange={(e) => {
               setFilterStatus(e.target.value);
@@ -272,16 +272,16 @@ const Dashboard = () => {
         </div>
 
         {/* Pagination */}
-        <div className="p-6 border-t flex items-center justify-between">
-          <p className="text-gray-600">
+        <div className="p-4 sm:p-6 border-t flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <p className="text-sm sm:text-base text-gray-600">
             Page <b className="text-gray-900">{currentPage}</b> of <b className="text-gray-900">{totalPages}</b>
           </p>
 
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-start">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-5 py-2 border border-gray-200 rounded-sm flex items-center justify-center gap-2 hover:bg-green-50 disabled:opacity-50 disabled:hover:bg-transparent text-[#2E7D32] font-semibold transition-colors"
+                className="px-3 sm:px-5 py-2 border border-gray-200 rounded-sm flex items-center justify-center gap-1 sm:gap-2 hover:bg-green-50 disabled:opacity-50 disabled:hover:bg-transparent text-[#2E7D32] text-sm sm:text-base font-semibold transition-colors flex-1 sm:flex-none"
               >
                 <ChevronLeft size={18} /> Prev
               </button>
@@ -289,7 +289,7 @@ const Dashboard = () => {
               <button
                 onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-5 py-2 border border-gray-200 rounded-sm flex items-center justify-center gap-2 hover:bg-green-50 disabled:opacity-50 disabled:hover:bg-transparent text-[#2E7D32] font-semibold transition-colors"
+                className="px-3 sm:px-5 py-2 border border-gray-200 rounded-sm flex items-center justify-center gap-1 sm:gap-2 hover:bg-green-50 disabled:opacity-50 disabled:hover:bg-transparent text-[#2E7D32] text-sm sm:text-base font-semibold transition-colors flex-1 sm:flex-none"
               >
                 Next <ChevronRight size={18} />
               </button>
@@ -299,9 +299,9 @@ const Dashboard = () => {
 
       {/* COMPLAINT OVERVIEW */}
       <div className="bg-white rounded-sm shadow-lg border overflow-hidden">
-        <div className="p-8 border-b flex justify-between bg-white">
-          <h3 className="text-xl font-bold flex items-center gap-2 text-[#1B5E20]">
-            <HelpCircle className="text-[#66BB6A]" /> Complaint Overview
+        <div className="p-4 sm:p-6 border-b flex flex-col sm:flex-row gap-4 justify-between bg-white">
+          <h3 className="text-lg sm:text-xl font-bold flex items-center gap-2 text-[#1B5E20]">
+            <HelpCircle className="text-[#66BB6A]" size={20} /> Complaint Overview
           </h3>
         </div>
 

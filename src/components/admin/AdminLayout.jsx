@@ -6,7 +6,7 @@ import {
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 
 const AdminLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024);
   const location = useLocation();
   const navigate = useNavigate();
 

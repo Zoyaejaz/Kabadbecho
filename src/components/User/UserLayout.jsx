@@ -5,7 +5,7 @@ import { LayoutDashboard, History, Wallet, User, LogOut, X, Menu } from "lucide-
 const UserLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024);
 
   const menuItems = [
     { icon: LayoutDashboard, label: "Overview", path: "/dashboard" },
@@ -33,22 +33,24 @@ const UserLayout = () => {
         </button>
 
         <div className="ml-4 flex items-center">
-          <img src="/KabadBecho2.jpg" className="h-12" />
-          <span className="ml-3 text-xl font-bold text-[#66BB6A]">User Dashboard</span>
+          <img src="/KabadBecho2.jpg" className="h-10 sm:h-12" />
+          <span className="ml-3 text-lg sm:text-xl font-bold text-[#66BB6A] hidden sm:block">User Dashboard</span>
         </div>
 
-        <div className="ml-auto flex gap-4 items-center">
+        <div className="ml-auto flex gap-2 sm:gap-4 items-center">
           <button
             onClick={() => navigate('/dashboard/book-pickup')}
-            className="px-6 py-2 bg-[#66BB6A] text-white font-semibold rounded-full hover:bg-[#4CAF50] transition-all duration-300 shadow-md flex items-center justify-center"
+            className="px-4 py-2 sm:px-6 bg-[#66BB6A] text-white font-semibold rounded-full hover:bg-[#4CAF50] transition-all duration-300 shadow-md flex items-center justify-center text-sm sm:text-base"
           >
-            Book pickup
+            <span className="hidden sm:inline">Book pickup</span>
+            <span className="sm:hidden">Book</span>
           </button>
           <button
             onClick={handleLogout}
-            className="flex gap-2 px-4 py-2 bg-[#5D4037] text-white rounded-sm hover:bg-[#4E362E]"
+            className="flex gap-2 px-3 py-2 sm:px-4 bg-[#5D4037] text-white rounded-sm hover:bg-[#4E362E]"
           >
-            <LogOut size={18} /> Logout
+            <LogOut size={18} />
+            <span className="hidden sm:inline">Logout</span>
           </button>
           
         </div>
@@ -91,6 +93,14 @@ const UserLayout = () => {
           <Outlet />
         </div>
       </main>
+
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-20 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
     </div>
   );
 };
